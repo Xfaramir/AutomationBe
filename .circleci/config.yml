@@ -10,5 +10,3 @@ jobs:
       - newman/newman-run:
           collection: ./pga.postman_collection.json
           environment: ./graphql.postman_environment.json
-          additional-options: -r htmlextra --reporter-htmlextra-darkTheme
-
