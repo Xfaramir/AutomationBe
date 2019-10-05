@@ -22,22 +22,7 @@
 											"script": {
 												"id": "fa58a6a2-46e4-4b0b-829a-8110ff21ce2a",
 												"exec": [
-													"const jsonData = pm.response.json();",
-													"let randomState= pm.environment.get(\"random_state\"); ",
-													"let numberStates= jsonData.data.listStates.length;",
-													"let listStates = jsonData.data.listStates[randomState];",
-													"",
-													"pm.test(\"Status code is 200\", function () {",
-													"    pm.response.to.have.status(200);",
-													"    pm.expect(jsonData.listStates).not.eql(null);",
-													"    pm.environment.set(\"usa_state\", listStates.state);",
-													"    pm.environment.set(\"usa_state_code\", listStates.stateCode);",
-													"    ",
-													"});",
-													"",
-													"pm.test(\"Returns 51 states\", function () {",
-													"    pm.expect(numberStates).to.eql(51);",
-													"});"
+													""
 												],
 												"type": "text/javascript"
 											}
