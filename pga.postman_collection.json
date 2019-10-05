@@ -15,16 +15,48 @@
 							"name": "Courses",
 							"item": [
 								{
-									"name": "test",
+									"name": "https://2r4x53015a.execute-api.us-east-1.amazonaws.com/qa/graphql",
 									"request": {
-										"method": "GET",
-										"header": [],
+										"method": "POST",
+										"header": [
+											{
+												"key": "accept",
+												"value": "*/*"
+											},
+											{
+												"key": "content-type",
+												"value": "application/json"
+											},
+											{
+												"key": "referer",
+												"value": "https://dbeofnzbx0eyo.cloudfront.net/stories/archive?offset=60"
+											},
+											{
+												"key": "sec-fetch-mode",
+												"value": "cors"
+											},
+											{
+												"key": "user-agent",
+												"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.19 Safari/537.36 Edg/77.0.235.9"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\"operationName\":\"LegacyArticles\",\"variables\":{\"offset\":60,\"limit\":30},\"query\":\"query LegacyArticles($limit: Int, $offset: Int) {\\n  allArticles(limit: $limit, offset: $offset) {\\n    total\\n    articles {\\n      headline\\n      nid\\n      category\\n      author\\n      hero_image\\n      hero_video\\n      created_date\\n      url\\n      __typename\\n    }\\n    __typename\\n  }\\n}\\n\"}"
+										},
 										"url": {
-											"raw": "www.google.com",
+											"raw": "https://2r4x53015a.execute-api.us-east-1.amazonaws.com/qa/graphql",
+											"protocol": "https",
 											"host": [
-												"www",
-												"google",
+												"2r4x53015a",
+												"execute-api",
+												"us-east-1",
+												"amazonaws",
 												"com"
+											],
+											"path": [
+												"qa",
+												"graphql"
 											]
 										}
 									},
