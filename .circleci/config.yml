@@ -10,4 +10,3 @@ jobs:
       - newman/newman-run:
           collection: ./pga.postman_collection.json
           environment: ./graphql.postman_environment.json
-          timeout: "2000"
