@@ -2,8 +2,8 @@ version: 2.1
 orbs:
   newman: postman/newman@0.0.2
 jobs:
-  newman-collection-run-env-timeout:
-    executor: postman/newman
+  build:
+  executor: postman/newman
     steps:
       - checkout
       - newman/newman-run:
