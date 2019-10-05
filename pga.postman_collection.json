@@ -15,6 +15,22 @@
 							"name": "Courses",
 							"item": [
 								{
+									"name": "test",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "www.google.com",
+											"host": [
+												"www",
+												"google",
+												"com"
+											]
+										}
+									},
+									"response": []
+								},
+								{
 									"name": "listStates",
 									"event": [
 										{
