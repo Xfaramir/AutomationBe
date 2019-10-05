@@ -7,9 +7,10 @@ jobs:
     executor: newman/postman-newman-docker
     steps:
       - checkout
-      -run: npm install
+      - run:
+          name: install-dependencies
+          command: npm install
       - newman/newman-run:
           collection: ./pga.postman_collection.json
           environment: ./graphql.postman_environment.json
           additional-options: -r htmlextra --reporter-htmlextra-darkTheme
-
