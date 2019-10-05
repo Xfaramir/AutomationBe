@@ -4,7 +4,7 @@ orbs:
 jobs:
   build:
   executor: newman/postman-newman-docker
-    steps:
+  steps:
       - checkout
       - newman/newman-run:
           collection: ./pga.postman_collection.json
