@@ -123,11 +123,8 @@
 											}
 										],
 										"body": {
-											"mode": "graphql",
-											"graphql": {
-												"query": "query listStates {\n listStates {\n state\n stateCode\n }\n}",
-												"variables": ""
-											}
+											"mode": "raw",
+											"raw": "{\"query\":\"query listStates {\\n listStates {\\n state\\n stateCode\\n }\\n}\"}"
 										},
 										"url": {
 											"raw": "{{PgaURL}}",
