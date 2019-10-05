@@ -15,54 +15,6 @@
 							"name": "Courses",
 							"item": [
 								{
-									"name": "https://2r4x53015a.execute-api.us-east-1.amazonaws.com/qa/graphql",
-									"request": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "accept",
-												"value": "*/*"
-											},
-											{
-												"key": "content-type",
-												"value": "application/json"
-											},
-											{
-												"key": "referer",
-												"value": "https://dbeofnzbx0eyo.cloudfront.net/stories/archive?offset=60"
-											},
-											{
-												"key": "sec-fetch-mode",
-												"value": "cors"
-											},
-											{
-												"key": "user-agent",
-												"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.19 Safari/537.36 Edg/77.0.235.9"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\"operationName\":\"LegacyArticles\",\"variables\":{\"offset\":60,\"limit\":30},\"query\":\"query LegacyArticles($limit: Int, $offset: Int) {\\n  allArticles(limit: $limit, offset: $offset) {\\n    total\\n    articles {\\n      headline\\n      nid\\n      category\\n      author\\n      hero_image\\n      hero_video\\n      created_date\\n      url\\n      __typename\\n    }\\n    __typename\\n  }\\n}\\n\"}"
-										},
-										"url": {
-											"raw": "https://2r4x53015a.execute-api.us-east-1.amazonaws.com/qa/graphql",
-											"protocol": "https",
-											"host": [
-												"2r4x53015a",
-												"execute-api",
-												"us-east-1",
-												"amazonaws",
-												"com"
-											],
-											"path": [
-												"qa",
-												"graphql"
-											]
-										}
-									},
-									"response": []
-								},
-								{
 									"name": "listStates",
 									"event": [
 										{
@@ -85,9 +37,6 @@
 													"",
 													"pm.test(\"Returns 51 states\", function () {",
 													"    pm.expect(numberStates).to.eql(51);",
-													"   jsonData.data.listStates.map((state)=>{",
-													"        console.log(state.stateCode);",
-													"    })",
 													"});"
 												],
 												"type": "text/javascript"
@@ -214,7 +163,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\"query\":\"query listCities {\\n listCities (stateCode: \\\"AL\\\") {\\n city\\n courseCount\\n }\\n}\"}"
+											"raw": "{\"query\":\"query listCities {\\n listCities (stateCode: \\\"{{usa_state_code}}\\\") {\\n city\\n courseCount\\n }\\n}\"}"
 										},
 										"url": {
 											"raw": "{{PgaURL}}",
@@ -287,11 +236,8 @@
 											}
 										],
 										"body": {
-											"mode": "graphql",
-											"graphql": {
-												"query": "query searchCourses {\n  searchCourses(searchText: \"{{usa_state}}\") {\n    name\n    facility_name\n    city\n    state\n    state_name\n    zip\n    phone\n    section_name\n    photo_facility\n    course_type_label\n    address1\n    address2\n    address3\n    address4\n    facility_id\n    universal_id\n    greenhouse_id\n    _geoloc {\n      lat\n      lng\n    }\n    members {\n      greenhouse_id\n      universal_id\n      member_number\n      name\n      profile_name\n      first_name\n      last_name\n      city\n      state\n      highest_ranked\n      member_type\n      member_class\n      photo_profile\n    }\n  }\n}\n",
-												"variables": ""
-											}
+											"mode": "raw",
+											"raw": "{\"query\":\"query searchCourses {\\n searchCourses(searchText: \\\"Georgia\\\") {\\n name\\n facility_name\\n city\\n state\\n state_name\\n zip\\n phone\\n section_name\\n photo_facility\\n course_type_label\\n address1\\n address2\\n address3\\n address4\\n facility_id\\n universal_id\\n greenhouse_id\\n _geoloc {\\n lat\\n lng\\n }\\n members {\\n greenhouse_id\\n universal_id\\n member_number\\n name\\n profile_name\\n first_name\\n last_name\\n city\\n state\\n highest_ranked\\n member_type\\n member_class\\n photo_profile\\n }\\n }\\n}\\n\"}"
 										},
 										"url": {
 											"raw": "{{PgaURL}}",
@@ -314,6 +260,7 @@
 													"let cityCourses = jsonData.data.cityCourses;",
 													"",
 													"let cityName= pm.environment.get(\"usa_city\");",
+													"",
 													"pm.test(\"Status code is 200\", function () {",
 													"pm.response.to.have.status(200);",
 													"});",
@@ -363,11 +310,8 @@
 											}
 										],
 										"body": {
-											"mode": "graphql",
-											"graphql": {
-												"query": "query cityCourses {\n cityCourses (state_name: \"{{usa_state}}\", city: \"{{usa_city}}\") {\n    name\n    facility_name\n    city\n    state\n    state_name\n    zip\n    phone\n    section_name\n    photo_facility\n    course_type_label\n    address1\n    address2\n    address3\n    address4    \n    facility_id\n    universal_id\n    greenhouse_id\n     _geoloc{\n         lat\n         lng\n     }\n     members{\n         greenhouse_id\n    universal_id\n    member_number\n    name\n    profile_name\n    first_name\n    last_name\n    city\n    state\n    highest_ranked\n    member_class\n    member_type\n    photo_profile\n    member_class_description\n     }\n     \n }\n}",
-												"variables": ""
-											}
+											"mode": "raw",
+											"raw": "{\"query\":\"query cityCourses {\\n cityCourses (state_name: \\\"{{usa_state}}\\\", city: \\\"{{usa_city}}\\\") {\\n name\\n facility_name\\n city\\n state\\n state_name\\n zip\\n phone\\n section_name\\n photo_facility\\n course_type_label\\n address1\\n address2\\n address3\\n address4 \\n facility_id\\n universal_id\\n greenhouse_id\\n _geoloc{\\n lat\\n lng\\n }\\n members{\\n greenhouse_id\\n universal_id\\n member_number\\n name\\n profile_name\\n first_name\\n last_name\\n city\\n state\\n highest_ranked\\n member_class\\n member_type\\n photo_profile\\n member_class_description\\n }\\n \\n }\\n}\"}"
 										},
 										"url": {
 											"raw": "{{PgaURL}}",
@@ -438,11 +382,8 @@
 											}
 										],
 										"body": {
-											"mode": "graphql",
-											"graphql": {
-												"query": "query facility {\n  facility(facility_id: \"{{facility_id}}\") {\n    name\n    facility_name\n    city\n    state\n    state_name\n    zip\n    phone\n    section_name\n    photo_facility\n    course_type_label\n    address1\n    address2\n    address3\n    address4\n    facility_id\n    universal_id\n    greenhouse_id\n    members {\n      universal_id\n      first_name\n      last_name\n      member_type\n      member_class_description\n    }\n  }\n}\n",
-												"variables": ""
-											}
+											"mode": "raw",
+											"raw": "{\"query\":\"query facility {\\n facility(facility_id: \\\"{{facility_id}}\\\") {\\n name\\n facility_name\\n city\\n state\\n state_name\\n zip\\n phone\\n section_name\\n photo_facility\\n course_type_label\\n address1\\n address2\\n address3\\n address4\\n facility_id\\n universal_id\\n greenhouse_id\\n members {\\n universal_id\\n first_name\\n last_name\\n member_type\\n member_class_description\\n }\\n }\\n}\\n\"}"
 										},
 										"url": {
 											"raw": "{{PgaURL}}",
@@ -539,11 +480,8 @@
 											}
 										],
 										"body": {
-											"mode": "graphql",
-											"graphql": {
-												"query": "query tournaments {\n  tournaments {\n    name\n    feedId\n    tournamentId\n    currentRoundState\n    state\n  }\n}\n",
-												"variables": ""
-											}
+											"mode": "raw",
+											"raw": "{\"query\":\"query tournaments {\\n tournaments {\\n name\\n feedId\\n tournamentId\\n currentRoundState\\n state\\n }\\n}\\n\"}"
 										},
 										"url": {
 											"raw": "{{PgaURL}}",
@@ -621,11 +559,8 @@
 											}
 										],
 										"body": {
-											"mode": "graphql",
-											"graphql": {
-												"query": "query tournament {\n  tournament(\n    tournamentId: \"{{tournament_id}}\"\n    feedId: \"{{tournament_feedId}}\"\n  ) {\n    name\n    tournamentId\n    feedId\n    currentRoundState\n    location\n    players {\n      playerId\n      currentPosition\n      currentRound\n      thru\n      feedId\n      teeTime\n    }\n  }\n}\n",
-												"variables": ""
-											}
+											"mode": "raw",
+											"raw": "{\"query\":\"query tournament {\\n tournament(\\n tournamentId: \\\"R2020522\\\"\\n feedId: \\\"PGA_TOUR\\\"\\n ) {\\n name\\n tournamentId\\n feedId\\n currentRoundState\\n location\\n players {\\n playerId\\n currentPosition\\n currentRound\\n thru\\n feedId\\n teeTime\\n }\\n }\\n}\\n\"}"
 										},
 										"url": {
 											"raw": "{{PgaURL}}",
@@ -692,11 +627,8 @@
 											}
 										],
 										"body": {
-											"mode": "graphql",
-											"graphql": {
-												"query": "query scorecard {\n    scorecard(tournamentId: \"{{tournament_id}}\", playerId: \"{{playerId}}\",feedId:\"{{tournament_feedId}}\") {\n      back\n      courseCode\n      front\n      holes {\n        inTheHoleTs\n        courseCode\n        hole\n        par\n        playerId\n        rRelativePar\n        round\n        score\n        tRelativePar\n        tournamentId\n        yardsActual\n        yardsOfficial\n      }\n      playerId\n      relativePar\n      round\n      startTee\n      stroke\n      teeTime\n      thru\n      tournamentId\n      utcOffset\n    }\n  }\n  ",
-												"variables": ""
-											}
+											"mode": "raw",
+											"raw": "{\"query\":\"query scorecard {\\n scorecard(tournamentId: \\\"{{tournament_id}}\\\", playerId: \\\"{{playerId}}\\\",feedId:\\\"{{tournament_feedId}}\\\") {\\n back\\n courseCode\\n front\\n holes {\\n inTheHoleTs\\n courseCode\\n hole\\n par\\n playerId\\n rRelativePar\\n round\\n score\\n tRelativePar\\n tournamentId\\n yardsActual\\n yardsOfficial\\n }\\n playerId\\n relativePar\\n round\\n startTee\\n stroke\\n teeTime\\n thru\\n tournamentId\\n utcOffset\\n }\\n }\\n \"}"
 										},
 										"url": {
 											"raw": "{{PgaURL}}",
@@ -763,11 +695,8 @@
 											}
 										],
 										"body": {
-											"mode": "graphql",
-											"graphql": {
-												"query": "query player {\n  player(playerId: \"{{playerId}}\", feedId: \"{{tournament_feedId}}\") {\n    firstName\n    lastName\n    playerId\n    feedId\n  }\n}\n",
-												"variables": ""
-											}
+											"mode": "raw",
+											"raw": "{\"query\":\"query player {\\n player(playerId: \\\"{{playerId}}\\\", feedId: \\\"PGA_TOUR\\\") {\\n firstName\\n lastName\\n playerId\\n feedId\\n }\\n}\\n\"}"
 										},
 										"url": {
 											"raw": "{{PgaURL}}",
@@ -824,8 +753,8 @@
 												"exec": [
 													"const jsonData = pm.response.json();",
 													"let articles = jsonData.data.allArticles.articles;",
-													"let articleNid = parseInt(jsonData.data.allArticles.articles[_.random(0, articles.length)].nid);",
-													"let articleHeadline= jsonData.data.allArticles.articles[_.random(0, articles.length )].headline;",
+													"let articleNid = parseInt(jsonData.data.allArticles.articles[_.random(0, 3)].nid);",
+													"let articleHeadline= jsonData.data.allArticles.articles[_.random(0, articles.length-1 )].headline;",
 													"pm.test(\"Status code is 200\", function () {",
 													"    pm.response.to.have.status(200);",
 													"    console.log(`Total articles is : ${jsonData.data.allArticles.total}`);",
@@ -890,11 +819,8 @@
 											}
 										],
 										"body": {
-											"mode": "graphql",
-											"graphql": {
-												"query": "query {\n  allArticles(offset: 1, limit: 100, ordertype: asc) {\n    total\n    articles {\n      nid\n      title\n      headline\n      category\n      author\n      author_type\n      hero_image\n      hero_video\n      hero_caption\n      hero_source\n      body\n      related_articles\n      related\n      tags\n      url\n      slug\n      object_type\n      created_date\n      updated_date\n    }\n  }\n}\n",
-												"variables": ""
-											}
+											"mode": "raw",
+											"raw": "{\"query\":\"query {\\n allArticles(offset: 1, limit: 5, ordertype: asc) {\\n total\\n articles {\\n nid\\n title\\n headline\\n category\\n author\\n author_type\\n hero_image\\n hero_video\\n hero_caption\\n hero_source\\n body\\n related_articles\\n related\\n tags\\n url\\n slug\\n object_type\\n created_date\\n updated_date\\n }\\n }\\n}\\n\"}\n"
 										},
 										"url": {
 											"raw": "{{PgaURL}}",
@@ -1001,11 +927,8 @@
 											}
 										],
 										"body": {
-											"mode": "graphql",
-											"graphql": {
-												"query": "query {\n articleById(nid: {{articleNids}}) {\n  nid,\n  title,\n  headline,\n  category,\n  author,\n  author_type,\n  hero_image,\n  hero_video,\n  hero_caption,\n  hero_source,\n  body,\n  related_articles,\n  related,\n  tags,\n  url\n}\n}",
-												"variables": ""
-											}
+											"mode": "raw",
+											"raw": "{\"query\":\"query {\\n articleById(nid: {{articleNids}}) {\\n nid,\\n title,\\n headline,\\n category,\\n author,\\n author_type,\\n hero_image,\\n hero_video,\\n hero_caption,\\n hero_source,\\n body,\\n related_articles,\\n related,\\n tags,\\n url\\n}\\n}\"}"
 										},
 										"url": {
 											"raw": "{{PgaURL}}",
@@ -1092,11 +1015,8 @@
 											}
 										],
 										"body": {
-											"mode": "graphql",
-											"graphql": {
-												"query": "query {\narticlesBySlug(slug: \"northwell-health-named-official-healthcare-provider-2019-pga-championship\") {\n  nid,\n  title,\n  headline,\n  category,\n  author,\n  author_type,\n  hero_image,\n  hero_video,\n  hero_caption,\n  hero_source,\n  body,\n  related_articles,\n  related,\n  tags,\n  url\n}\n\n}",
-												"variables": ""
-											}
+											"mode": "raw",
+											"raw": "{\"query\":\"query {\\narticlesBySlug(slug: \\\"northwell-health-named-official-healthcare-provider-2019-pga-championship\\\") {\\n nid,\\n title,\\n headline,\\n category,\\n author,\\n author_type,\\n hero_image,\\n hero_video,\\n hero_caption,\\n hero_source,\\n body,\\n related_articles,\\n related,\\n tags,\\n url\\n}\\n\\n}\"}\n"
 										},
 										"url": {
 											"raw": "{{PgaURL}}",
@@ -1184,11 +1104,8 @@
 									}
 								],
 								"body": {
-									"mode": "graphql",
-									"graphql": {
-										"query": "query search {\n search(searchText: \"{{articleHeadline}}\", offset: 0, limit: 10) {\n   total\n   searchResults {\n     object_id\n     object_type\n     title\n     headline\n     url\n     slug\n     hero_image\n     category\n     created_date\n   }\n }\n}",
-										"variables": ""
-									}
+									"mode": "raw",
+									"raw": "{\"query\":\"query search {\\n search(searchText: \\\"{{articleHeadline}}\\\", offset: 0, limit: 10) {\\n total\\n searchResults {\\n object_id\\n object_type\\n title\\n headline\\n url\\n slug\\n hero_image\\n category\\n created_date\\n }\\n }\\n}\"}"
 								},
 								"url": {
 									"raw": "{{PgaURL}}",
