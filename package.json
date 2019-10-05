@@ -1,0 +1,24 @@
+{
+  "name": "automationbe",
+  "version": "1.0.0",
+  "description": "graphql services testing",
+  "main": "index.js",
+  "scripts": {
+    "test": "newman run pga.postman_collection.json -e graphql.postman_environment.json -r htmlextra --reporter-htmlextra-darkTheme"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Xfaramir/AutomationBe.git"
+  },
+  "author": "David Barrera",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Xfaramir/AutomationBe/issues"
+  },
+  "homepage": "https://github.com/Xfaramir/AutomationBe#readme",
+  "dependencies": {
+    "newman": "^4.5.5",
+    "newman-reporter-html": "^1.0.3",
+    "newman-reporter-htmlextra": "^1.8.9"
+  }
+}
