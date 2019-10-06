@@ -1,0 +1,1075 @@
+{
+	"info": {
+		"_postman_id": "eb3d32e2-7586-4ef4-bc7d-7618482202a7",
+		"name": "PGA Site Redesign",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "listStates",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "fa58a6a2-46e4-4b0b-829a-8110ff21ce2a",
+						"exec": [
+							"const jsonData = pm.response.json();",
+							"let randomState= pm.environment.get(\"random_state\"); ",
+							"let numberStates= jsonData.data.listStates.length;",
+							"let listStates = jsonData.data.listStates[randomState];",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"    pm.expect(jsonData.listStates).not.eql(null);",
+							"    pm.environment.set(\"usa_state\", listStates.state);",
+							"    pm.environment.set(\"usa_state_code\", listStates.stateCode);",
+							"    ",
+							"});",
+							"",
+							"pm.test(\"Returns 51 states\", function () {",
+							"    pm.expect(numberStates).to.eql(51);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "05ad89c7-8a0f-4447-994f-cd3d3172a653",
+						"exec": [
+							"pm.environment.set(\"random_state\", _.random(0, 49));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "accept",
+						"value": "*/*"
+					},
+					{
+						"key": "accept-encoding",
+						"value": "gzip, deflate, br"
+					},
+					{
+						"key": "accept-language",
+						"value": "en-US,en;q=0.9,es-US;q=0.8,es;q=0.7"
+					},
+					{
+						"key": "authority",
+						"value": "{{PgaURL}}"
+					},
+					{
+						"key": "content-type",
+						"value": "application/json"
+					},
+					{
+						"key": "origin",
+						"value": "{{PgaURL}}"
+					},
+					{
+						"key": "referer",
+						"value": "{{PgaURL}}"
+					},
+					{
+						"key": "user-agent",
+						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"query\":\"query listStates {\\n listStates {\\n state\\n stateCode\\n }\\n}\"}"
+				},
+				"url": {
+					"raw": "{{PgaURL}}",
+					"host": [
+						"{{PgaURL}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "listCities",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "fa58a6a2-46e4-4b0b-829a-8110ff21ce2a",
+						"exec": [
+							"const jsonData = pm.response.json();",
+							"let listCities = jsonData.data.listCities;",
+							"let usaCity = listCities[_.random(0,listCities.length)].city;",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"    pm.environment.set(\"usa_city\", usaCity);",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "accept",
+						"value": "*/*"
+					},
+					{
+						"key": "accept-encoding",
+						"value": "gzip, deflate, br"
+					},
+					{
+						"key": "accept-language",
+						"value": "en-US,en;q=0.9,es-US;q=0.8,es;q=0.7"
+					},
+					{
+						"key": "authority",
+						"value": "{{PgaURL}}"
+					},
+					{
+						"key": "content-type",
+						"value": "application/json"
+					},
+					{
+						"key": "origin",
+						"value": "{{PgaURL}}"
+					},
+					{
+						"key": "referer",
+						"value": "{{PgaURL}}"
+					},
+					{
+						"key": "user-agent",
+						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"query\":\"query listCities {\\n listCities (stateCode: \\\"{{usa_state_code}}\\\") {\\n city\\n courseCount\\n }\\n}\"}"
+				},
+				"url": {
+					"raw": "{{PgaURL}}",
+					"host": [
+						"{{PgaURL}}"
+					]
+				},
+				"description": "This endpoint is to support the page showing the list of cities for a given state.\n"
+			},
+			"response": []
+		},
+		{
+			"name": "searchCourses",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "fa58a6a2-46e4-4b0b-829a-8110ff21ce2a",
+						"exec": [
+							"const jsonData = pm.response.json();",
+							"let facilityName = jsonData.data.searchCourses;",
+							"let usaCity= pm.environment.get(\"usa_city\");",
+							"let usaState= pm.environment.get(\"usa_state\");",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"    pm.environment.set(\"facility_id\", facilityName[0].facility_id);",
+							"   ",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "accept",
+						"value": "*/*"
+					},
+					{
+						"key": "accept-encoding",
+						"value": "gzip, deflate, br"
+					},
+					{
+						"key": "accept-language",
+						"value": "en-US,en;q=0.9,es-US;q=0.8,es;q=0.7"
+					},
+					{
+						"key": "authority",
+						"value": "{{PgaURL}}"
+					},
+					{
+						"key": "content-type",
+						"value": "application/json"
+					},
+					{
+						"key": "origin",
+						"value": "{{PgaURL}}"
+					},
+					{
+						"key": "referer",
+						"value": "{{PgaURL}}"
+					},
+					{
+						"key": "user-agent",
+						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"query\":\"query searchCourses {\\n searchCourses(searchText: \\\"Georgia\\\") {\\n name\\n facility_name\\n city\\n state\\n state_name\\n zip\\n phone\\n section_name\\n photo_facility\\n course_type_label\\n address1\\n address2\\n address3\\n address4\\n facility_id\\n universal_id\\n greenhouse_id\\n _geoloc {\\n lat\\n lng\\n }\\n members {\\n greenhouse_id\\n universal_id\\n member_number\\n name\\n profile_name\\n first_name\\n last_name\\n city\\n state\\n highest_ranked\\n member_type\\n member_class\\n photo_profile\\n }\\n }\\n}\\n\"}"
+				},
+				"url": {
+					"raw": "{{PgaURL}}",
+					"host": [
+						"{{PgaURL}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "cityCourses",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "fa58a6a2-46e4-4b0b-829a-8110ff21ce2a",
+						"exec": [
+							"const jsonData = pm.response.json();",
+							"let cityCourses = jsonData.data.cityCourses;",
+							"",
+							"let cityName= pm.environment.get(\"usa_city\");",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "accept",
+						"value": "*/*"
+					},
+					{
+						"key": "accept-encoding",
+						"value": "gzip, deflate, br"
+					},
+					{
+						"key": "accept-language",
+						"value": "en-US,en;q=0.9,es-US;q=0.8,es;q=0.7"
+					},
+					{
+						"key": "authority",
+						"value": "{{PgaURL}}"
+					},
+					{
+						"key": "content-type",
+						"value": "application/json"
+					},
+					{
+						"key": "origin",
+						"value": "{{PgaURL}}"
+					},
+					{
+						"key": "referer",
+						"value": "{{PgaURL}}"
+					},
+					{
+						"key": "user-agent",
+						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"query\":\"query cityCourses {\\n cityCourses (state_name: \\\"{{usa_state}}\\\", city: \\\"{{usa_city}}\\\") {\\n name\\n facility_name\\n city\\n state\\n state_name\\n zip\\n phone\\n section_name\\n photo_facility\\n course_type_label\\n address1\\n address2\\n address3\\n address4 \\n facility_id\\n universal_id\\n greenhouse_id\\n _geoloc{\\n lat\\n lng\\n }\\n members{\\n greenhouse_id\\n universal_id\\n member_number\\n name\\n profile_name\\n first_name\\n last_name\\n city\\n state\\n highest_ranked\\n member_class\\n member_type\\n photo_profile\\n member_class_description\\n }\\n \\n }\\n}\"}"
+				},
+				"url": {
+					"raw": "{{PgaURL}}",
+					"host": [
+						"{{PgaURL}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "facility",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "fa58a6a2-46e4-4b0b-829a-8110ff21ce2a",
+						"exec": [
+							"const jsonData = pm.response.json();",
+							"let zipCode = jsonData.data.facility.zip;",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"    var zip = zipCode.substring(0, 5);",
+							"    pm.environment.set(\"zipCode\", zip);",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "accept",
+						"value": "*/*"
+					},
+					{
+						"key": "accept-encoding",
+						"value": "gzip, deflate, br"
+					},
+					{
+						"key": "accept-language",
+						"value": "en-US,en;q=0.9,es-US;q=0.8,es;q=0.7"
+					},
+					{
+						"key": "authority",
+						"value": "{{PgaURL}}"
+					},
+					{
+						"key": "content-type",
+						"value": "application/json"
+					},
+					{
+						"key": "origin",
+						"value": "{{PgaURL}}"
+					},
+					{
+						"key": "referer",
+						"value": "{{PgaURL}}"
+					},
+					{
+						"key": "user-agent",
+						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"query\":\"query facility {\\n facility(facility_id: \\\"{{facility_id}}\\\") {\\n name\\n facility_name\\n city\\n state\\n state_name\\n zip\\n phone\\n section_name\\n photo_facility\\n course_type_label\\n address1\\n address2\\n address3\\n address4\\n facility_id\\n universal_id\\n greenhouse_id\\n members {\\n universal_id\\n first_name\\n last_name\\n member_type\\n member_class_description\\n }\\n }\\n}\\n\"}"
+				},
+				"url": {
+					"raw": "{{PgaURL}}",
+					"host": [
+						"{{PgaURL}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "tournaments",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "fa58a6a2-46e4-4b0b-829a-8110ff21ce2a",
+						"exec": [
+							"const jsonData = pm.response.json();",
+							"let tournaments = jsonData.data.tournaments;",
+							"",
+							"let tournament = jsonData.data.tournaments[_.random(0, tournaments.length - 1)];",
+							"",
+							"let {tournamentId: tournament_id,feedId: feedId, currentRoundState }  = tournament;",
+							"",
+							"pm.test(\"Status code is 200\", function() {",
+							"  pm.response.to.have.status(200);",
+							"  pm.environment.set(\"tournament_id\", tournament_id);",
+							"  pm.environment.set(\"tournament_currentRoundState\", currentRoundState);",
+							"  pm.environment.set(\"tournament_feedId\", feedId);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "feca5541-5b90-44f8-93d1-302158046083",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "accept",
+						"value": "*/*"
+					},
+					{
+						"key": "accept-encoding",
+						"value": "gzip, deflate, br"
+					},
+					{
+						"key": "accept-language",
+						"value": "en-US,en;q=0.9,es-US;q=0.8,es;q=0.7"
+					},
+					{
+						"key": "authority",
+						"value": "{{PgaURL}}"
+					},
+					{
+						"key": "content-type",
+						"value": "application/json"
+					},
+					{
+						"key": "origin",
+						"value": "{{PgaURL}}"
+					},
+					{
+						"key": "referer",
+						"value": "{{PgaURL}}"
+					},
+					{
+						"key": "user-agent",
+						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"query\":\"query tournaments {\\n tournaments {\\n name\\n feedId\\n tournamentId\\n currentRoundState\\n state\\n }\\n}\\n\"}"
+				},
+				"url": {
+					"raw": "{{PgaURL}}",
+					"host": [
+						"{{PgaURL}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "tournament",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "fa58a6a2-46e4-4b0b-829a-8110ff21ce2a",
+						"exec": [
+							"const jsonData = pm.response.json();",
+							"",
+							"if (jsonData.data.tournament) {",
+							"  let players = jsonData.data.tournament.players;",
+							"",
+							"  if ( players.length > 1) {",
+							"    let player = players[_.random(0, players.length - 1)];",
+							"",
+							"    let { playerId } = player;",
+							"    pm.environment.set(\"playerId\", playerId);",
+							"  }",
+							"}",
+							"",
+							"pm.test(\"Status code is 200\", function() {",
+							"  pm.response.to.have.status(200);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "accept",
+						"value": "*/*"
+					},
+					{
+						"key": "accept-encoding",
+						"value": "gzip, deflate, br"
+					},
+					{
+						"key": "accept-language",
+						"value": "en-US,en;q=0.9,es-US;q=0.8,es;q=0.7"
+					},
+					{
+						"key": "authority",
+						"value": "{{PgaURL}}"
+					},
+					{
+						"key": "content-type",
+						"value": "application/json"
+					},
+					{
+						"key": "origin",
+						"value": "{{PgaURL}}"
+					},
+					{
+						"key": "referer",
+						"value": "{{PgaURL}}"
+					},
+					{
+						"key": "user-agent",
+						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"query\":\"query tournament {\\n tournament(\\n tournamentId: \\\"R2020522\\\"\\n feedId: \\\"PGA_TOUR\\\"\\n ) {\\n name\\n tournamentId\\n feedId\\n currentRoundState\\n location\\n players {\\n playerId\\n currentPosition\\n currentRound\\n thru\\n feedId\\n teeTime\\n }\\n }\\n}\\n\"}"
+				},
+				"url": {
+					"raw": "{{PgaURL}}",
+					"host": [
+						"{{PgaURL}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "scorecard",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "fa58a6a2-46e4-4b0b-829a-8110ff21ce2a",
+						"exec": [
+							"const jsonData = pm.response.json();",
+							"pm.test(\"Status code is 200\", function () {",
+							"pm.response.to.have.status(200);",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "accept",
+						"value": "*/*"
+					},
+					{
+						"key": "accept-encoding",
+						"value": "gzip, deflate, br"
+					},
+					{
+						"key": "accept-language",
+						"value": "en-US,en;q=0.9,es-US;q=0.8,es;q=0.7"
+					},
+					{
+						"key": "authority",
+						"value": "{{PgaURL}}"
+					},
+					{
+						"key": "content-type",
+						"value": "application/json"
+					},
+					{
+						"key": "origin",
+						"value": "{{PgaURL}}"
+					},
+					{
+						"key": "referer",
+						"value": "{{PgaURL}}"
+					},
+					{
+						"key": "user-agent",
+						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"query\":\"query scorecard {\\n scorecard(tournamentId: \\\"{{tournament_id}}\\\", playerId: \\\"{{playerId}}\\\",feedId:\\\"{{tournament_feedId}}\\\") {\\n back\\n courseCode\\n front\\n holes {\\n inTheHoleTs\\n courseCode\\n hole\\n par\\n playerId\\n rRelativePar\\n round\\n score\\n tRelativePar\\n tournamentId\\n yardsActual\\n yardsOfficial\\n }\\n playerId\\n relativePar\\n round\\n startTee\\n stroke\\n teeTime\\n thru\\n tournamentId\\n utcOffset\\n }\\n }\\n \"}"
+				},
+				"url": {
+					"raw": "{{PgaURL}}",
+					"host": [
+						"{{PgaURL}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "player",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "fa58a6a2-46e4-4b0b-829a-8110ff21ce2a",
+						"exec": [
+							"const jsonData = pm.response.json();",
+							"pm.test(\"Status code is 200\", function () {",
+							"pm.response.to.have.status(200);",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "accept",
+						"value": "*/*"
+					},
+					{
+						"key": "accept-encoding",
+						"value": "gzip, deflate, br"
+					},
+					{
+						"key": "accept-language",
+						"value": "en-US,en;q=0.9,es-US;q=0.8,es;q=0.7"
+					},
+					{
+						"key": "authority",
+						"value": "{{PgaURL}}"
+					},
+					{
+						"key": "content-type",
+						"value": "application/json"
+					},
+					{
+						"key": "origin",
+						"value": "{{PgaURL}}"
+					},
+					{
+						"key": "referer",
+						"value": "{{PgaURL}}"
+					},
+					{
+						"key": "user-agent",
+						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"query\":\"query player {\\n player(playerId: \\\"{{playerId}}\\\", feedId: \\\"PGA_TOUR\\\") {\\n firstName\\n lastName\\n playerId\\n feedId\\n }\\n}\\n\"}"
+				},
+				"url": {
+					"raw": "{{PgaURL}}",
+					"host": [
+						"{{PgaURL}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "allArticles",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "fa58a6a2-46e4-4b0b-829a-8110ff21ce2a",
+						"exec": [
+							"const jsonData = pm.response.json();",
+							"let articles = jsonData.data.allArticles.articles;",
+							"let articleNid = parseInt(jsonData.data.allArticles.articles[_.random(0, 3)].nid);",
+							"let articleHeadline= jsonData.data.allArticles.articles[_.random(0, articles.length-1 )].headline;",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"    console.log(`Total articles is : ${jsonData.data.allArticles.total}`);",
+							"    pm.environment.set(\"articleNids\", articleNid);",
+							"      pm.environment.set(\"articleHeadline\", articleHeadline);",
+							"});",
+							"",
+							"pm.test(\"Articles Exist\", function () {",
+							"   pm.expect(jsonData.data).not.eql(undefined);",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "1948ae57-7c0f-49ef-a2de-b3f7176227ce",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "accept",
+						"value": "*/*"
+					},
+					{
+						"key": "accept-encoding",
+						"value": "gzip, deflate, br"
+					},
+					{
+						"key": "accept-language",
+						"value": "en-US,en;q=0.9,es-US;q=0.8,es;q=0.7"
+					},
+					{
+						"key": "authority",
+						"value": "{{PgaURL}}"
+					},
+					{
+						"key": "content-type",
+						"value": "application/json"
+					},
+					{
+						"key": "origin",
+						"value": "{{PgaURL}}"
+					},
+					{
+						"key": "referer",
+						"value": "{{PgaURL}}"
+					},
+					{
+						"key": "user-agent",
+						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"query\":\"query {\\n allArticles(offset: 1, limit: 5, ordertype: asc) {\\n total\\n articles {\\n nid\\n title\\n headline\\n category\\n author\\n author_type\\n hero_image\\n hero_video\\n hero_caption\\n hero_source\\n body\\n related_articles\\n related\\n tags\\n url\\n slug\\n object_type\\n created_date\\n updated_date\\n }\\n }\\n}\\n\"}\n"
+				},
+				"url": {
+					"raw": "{{PgaURL}}",
+					"host": [
+						"{{PgaURL}}"
+					]
+				},
+				"description": "In order to obtain all articles stored in our legacy articles database."
+			},
+			"response": []
+		},
+		{
+			"name": "articleById",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "fa58a6a2-46e4-4b0b-829a-8110ff21ce2a",
+						"exec": [
+							"const jsonData = pm.response.json();",
+							"pm.environment.get(\"articleNid\");",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Article Exist\", function () {",
+							"   pm.expect(jsonData.data).not.eql(undefined);",
+							"});",
+							"",
+							"pm.test(\"Article contains nid\", function () {",
+							"    let articleId = jsonData.data.articleById[0].nid;",
+							"    pm.expect(articleId).not.eql(undefined);",
+							"    console.log(`The article id is ${articleId}`)",
+							"});",
+							"",
+							"pm.test(\"Article contains title\", function () {",
+							"    let articleTitle = jsonData.data.articleById[0].title;",
+							"    pm.expect(articleTitle).not.eql(undefined);",
+							"    console.log(`The article id is ${articleTitle}`)",
+							"});",
+							"",
+							"pm.test(\"Article contains events category\", function () {",
+							"    let articleCategory= jsonData.data.articleById[0].category;",
+							"    pm.expect(articleCategory).not.eql(undefined);",
+							"    console.log(`The article category is ${articleCategory}`)",
+							"});",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "f54819ed-d106-413e-9c2d-5ebb2dcb3360",
+						"exec": [
+							"let articleNids = pm.environment.get(\"articleNids\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "accept",
+						"value": "*/*"
+					},
+					{
+						"key": "accept-encoding",
+						"value": "gzip, deflate, br"
+					},
+					{
+						"key": "accept-language",
+						"value": "en-US,en;q=0.9,es-US;q=0.8,es;q=0.7"
+					},
+					{
+						"key": "authority",
+						"value": "8wytltq586.execute-api.us-east-1.amazonaws.com"
+					},
+					{
+						"key": "content-type",
+						"value": "application/json"
+					},
+					{
+						"key": "origin",
+						"value": "{{PgaURL}}"
+					},
+					{
+						"key": "referer",
+						"value": "{{PgaURL}}"
+					},
+					{
+						"key": "user-agent",
+						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"query\":\"query {\\n articleById(nid: {{articleNids}}) {\\n nid,\\n title,\\n headline,\\n category,\\n author,\\n author_type,\\n hero_image,\\n hero_video,\\n hero_caption,\\n hero_source,\\n body,\\n related_articles,\\n related,\\n tags,\\n url\\n}\\n}\"}"
+				},
+				"url": {
+					"raw": "{{PgaURL}}",
+					"host": [
+						"{{PgaURL}}"
+					]
+				},
+				"description": "In order to query an specific article and check its properties."
+			},
+			"response": []
+		},
+		{
+			"name": "articlesBySlug",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "fa58a6a2-46e4-4b0b-829a-8110ff21ce2a",
+						"exec": [
+							"const jsonData = pm.response.json();",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Article Exist\", function () {",
+							"   pm.expect(jsonData.data).not.eql(undefined);",
+							"});",
+							"",
+							"pm.test(\"Article contains nid\", function () {",
+							"    let articleId = jsonData.data.articlesBySlug[0].nid;",
+							"    pm.expect(articleId).to.eql(\"5050\");",
+							"    console.log(`The articleSlug id is ${articleId}`)",
+							"});",
+							"",
+							"pm.test(\"Article contains title\", function () {",
+							"    let articleTitle = jsonData.data.articlesBySlug[0].title;",
+							"    pm.expect(articleTitle).to.include(\"Northwell Health named official healthcare provider of the 2019 PGA Championship\");",
+							"    console.log(`The articleSlug id is ${articleTitle}`)",
+							"});",
+							"",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "accept",
+						"value": "*/*"
+					},
+					{
+						"key": "accept-encoding",
+						"value": "gzip, deflate, br"
+					},
+					{
+						"key": "accept-language",
+						"value": "en-US,en;q=0.9,es-US;q=0.8,es;q=0.7"
+					},
+					{
+						"key": "authority",
+						"value": "{{PgaURL}}"
+					},
+					{
+						"key": "content-type",
+						"value": "application/json"
+					},
+					{
+						"key": "origin",
+						"value": "{{PgaURL}}"
+					},
+					{
+						"key": "referer",
+						"value": "{{PgaURL}}"
+					},
+					{
+						"key": "user-agent",
+						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"query\":\"query {\\narticlesBySlug(slug: \\\"northwell-health-named-official-healthcare-provider-2019-pga-championship\\\") {\\n nid,\\n title,\\n headline,\\n category,\\n author,\\n author_type,\\n hero_image,\\n hero_video,\\n hero_caption,\\n hero_source,\\n body,\\n related_articles,\\n related,\\n tags,\\n url\\n}\\n\\n}\"}\n"
+				},
+				"url": {
+					"raw": "{{PgaURL}}",
+					"host": [
+						"{{PgaURL}}"
+					]
+				},
+				"description": "In order to query an specific article and check its properties."
+			},
+			"response": []
+		},
+		{
+			"name": "Search",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "fa58a6a2-46e4-4b0b-829a-8110ff21ce2a",
+						"exec": [
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							" ",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "05ad89c7-8a0f-4447-994f-cd3d3172a653",
+						"exec": [
+							"pm.environment.set(\"random_state\", _.random(0, 49));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "accept",
+						"value": "*/*"
+					},
+					{
+						"key": "accept-encoding",
+						"value": "gzip, deflate, br"
+					},
+					{
+						"key": "accept-language",
+						"value": "en-US,en;q=0.9,es-US;q=0.8,es;q=0.7"
+					},
+					{
+						"key": "authority",
+						"value": "{{PgaURL}}"
+					},
+					{
+						"key": "content-type",
+						"value": "application/json"
+					},
+					{
+						"key": "origin",
+						"value": "{{PgaURL}}"
+					},
+					{
+						"key": "referer",
+						"value": "{{PgaURL}}"
+					},
+					{
+						"key": "user-agent",
+						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"query\":\"query search {\\n search(searchText: \\\"{{articleHeadline}}\\\", offset: 0, limit: 10) {\\n total\\n searchResults {\\n object_id\\n object_type\\n title\\n headline\\n url\\n slug\\n hero_image\\n category\\n created_date\\n }\\n }\\n}\"}"
+				},
+				"url": {
+					"raw": "{{PgaURL}}",
+					"host": [
+						"{{PgaURL}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "fa0cd6ee-1896-44ea-9656-e5d6d61340fb",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "572608fe-67e1-4c07-9e79-bc9757ebca52",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
