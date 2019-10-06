@@ -13,4 +13,4 @@ jobs:
       - newman/newman-run:
           collection: ./src/pga.postman_collection.json
           environment: ./src/graphql.postman_environment.json
-          additional-options: -r htmlextra
+          # additional-options: -r htmlextra
