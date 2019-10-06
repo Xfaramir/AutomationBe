@@ -9,7 +9,7 @@ jobs:
       - checkout
       - run:
           name: install-dependencies
-          command: npm install newman-reporter-htmlextra
+          command: npm install newman
       - newman/newman-run:
           collection: ./pga.postman_collection.json
           environment: ./graphql.postman_environment.json
