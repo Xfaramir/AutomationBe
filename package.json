@@ -16,5 +16,8 @@
     "url": "https://github.com/Xfaramir/AutomationBe/issues"
   },
   "homepage": "https://github.com/Xfaramir/AutomationBe#readme",
-  "dependencies": {}
+  "dependencies": {
+    "newman": "^4.5.5",
+    "newman-reporter-htmlextra": "^1.8.9"
+  }
 }
