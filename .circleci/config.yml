@@ -9,7 +9,7 @@ jobs:
       - checkout
       - run:
           name: install-dependencies
-          command: npm config set unsafe-perm true npm install -g newman-reporter-htmlextra
+          command: npm install -S newman
       - newman/newman-run:
           collection: ./pga.postman_collection.json
           environment: ./graphql.postman_environment.json
