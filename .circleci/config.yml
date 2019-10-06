@@ -4,7 +4,7 @@ orbs:
 
 jobs:
   build:
-    executor: newman/postman-newman-docker
+    executor: postman/newman_alpine33
     steps:
       - checkout
       - run:
