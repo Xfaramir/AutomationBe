@@ -4,7 +4,7 @@
   "description": "graphql services testing",
   "main": "index.js",
   "scripts": {
-    "test": "newman run src/graphql.postman_environment.json -e src/graphql.postman_environment.json -r htmlextra --reporter-htmlextra-darkTheme"
+    "test": "newman run src/pga.postman_collection.json -e src/graphql.postman_environment.json -r htmlextra --reporter-htmlextra-darkTheme"
   },
   "repository": {
     "type": "git",
