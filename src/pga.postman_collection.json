@@ -2013,73 +2013,73 @@
 	],
 	"variable": [
 		{
-			"id": "779d012a-4f21-485a-aec6-78bbd85c1e2b",
+			"id": "0463bc5b-69ca-46a0-a980-748e8ff147bc",
 			"key": "env",
 			"value": "https://dbeofnzbx0eyo.cloudfront.net/",
 			"type": "string"
 		},
 		{
-			"id": "105d948c-66c8-4045-88e4-05fe431933ca",
+			"id": "72c98ddd-ecfe-41b3-8c28-68d5afbd1e4f",
 			"key": "graphql.dataFeed.Url",
 			"value": "https://2r4x53015a.execute-api.us-east-1.amazonaws.com/qa/graphql",
 			"type": "string"
 		},
 		{
-			"id": "d1f69010-512d-4b64-9e04-e8231839f284",
+			"id": "bcef007a-7f36-453a-83db-06e8314302a0",
 			"key": "graphql.contentful.Url",
 			"value": "https://graphql.contentful.com/content/v1/spaces/56u5qdsjym8c/environments/qa",
 			"type": "string"
 		},
 		{
-			"id": "0d522d3b-9b24-40c5-98c5-0957ec071eef",
+			"id": "3949914d-6622-4ee9-88e7-b4113637d6ca",
 			"key": "NavMainId",
 			"value": "1bd2WQMTwt7QaWtdW6xwcd",
 			"type": "string"
 		},
 		{
-			"id": "9522b0b0-8ca4-4068-b7b9-61278c6b4340",
+			"id": "3bce490e-1f62-49e8-8cbc-969c665e4904",
 			"key": "PageHomeId",
 			"value": "7ioZefYMc8oCJtTvYeAxSo",
 			"type": "string"
 		},
 		{
-			"id": "4e1fa19a-b0ae-4213-9466-704c83fbb6bd",
+			"id": "ce0f4968-3b1e-4587-8ae0-96384628e81d",
 			"key": "TournamentId",
 			"value": "R2020047",
 			"type": "string"
 		},
 		{
-			"id": "24e73db1-3e7f-418d-ab5a-13f7df15dccf",
+			"id": "8254799e-26f3-4985-ad0a-123eb0f213c6",
 			"key": "FeedId",
 			"value": "PGA_TOUR",
 			"type": "string"
 		},
 		{
-			"id": "ac96dd80-c30b-448a-90df-4d63845f05d9",
+			"id": "1c548239-9480-4b5d-bde9-617c2e2e5b50",
 			"key": "FooterId",
 			"value": "JNWNtqNJ4jtSczLZLw1Nf",
 			"type": "string"
 		},
 		{
-			"id": "c9885723-89a1-46d2-badd-805d0fdfc55f",
+			"id": "9eedfa01-327f-4008-a20d-c8a8dbe29ed2",
 			"key": "CoursesLandingId",
 			"value": "1yEwUXQhmImgdCPLjHW6e6",
 			"type": "string"
 		},
 		{
-			"id": "d06c6685-535b-4089-be6b-074339c1b444",
+			"id": "bf8af609-e5b5-4190-969b-0d18fbc847d0",
 			"key": "LearnPageId",
 			"value": "3xTFUw5IlNKqjihUVsH3n4",
 			"type": "string"
 		},
 		{
-			"id": "a2e4c846-7984-4669-af2b-5b8ff1313bc3",
+			"id": "8bafe080-a54a-4bb4-993c-db32fed92c46",
 			"key": "EventsLandingId",
 			"value": "7N2eKA3qd5SNXpZOZGEsxO",
 			"type": "string"
 		},
 		{
-			"id": "dd330a97-65f0-42b2-a422-fbd624c4ca9e",
+			"id": "a727bbf9-d1b6-4de5-8b3e-3ebe57ad20b4",
 			"key": "StoriesLandingId",
 			"value": "77N3oobP3YcPxeOCLzee4j",
 			"type": "string"
