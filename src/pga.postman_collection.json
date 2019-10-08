@@ -6,1048 +6,1987 @@
 	},
 	"item": [
 		{
-			"name": "listStates",
-			"event": [
+			"name": "Home",
+			"item": [
 				{
-					"listen": "test",
-					"script": {
-						"id": "fa58a6a2-46e4-4b0b-829a-8110ff21ce2a",
-						"exec": [
-							"const jsonData = pm.response.json();",
-							"let randomState= pm.environment.get(\"random_state\"); ",
-							"let numberStates= jsonData.data.listStates.length;",
-							"let listStates = jsonData.data.listStates[randomState];",
-							"",
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
-							"    pm.expect(jsonData.listStates).not.eql(null);",
-							"    pm.environment.set(\"usa_state\", listStates.state);",
-							"    pm.environment.set(\"usa_state_code\", listStates.stateCode);",
-							"    ",
-							"});",
-							"",
-							"pm.test(\"Returns 51 states\", function () {",
-							"    pm.expect(numberStates).to.eql(51);",
-							"});"
+					"name": "NavMain",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "900f0743-e1e7-4551-b458-37e0990fd2d9",
+								"exec": [
+									"pm.globals.get(\"NavMainId\");"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "3195aa50-f69d-4f01-ae0b-5f315bd6d602",
+								"exec": [
+									"let jsonData = pm.response.json();",
+									"let linksCollectionItems = jsonData.data.navMain.linksCollection.items;",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Navigation links exist and match\", function () {",
+									"   pm.expect(linksCollectionItems[0].link).to.eql(\"/\");",
+									"       pm.expect(linksCollectionItems[1].link).to.eql(\"/play\");",
+									"         pm.expect(linksCollectionItems[2].link).to.eql(\"/learn\");",
+									"          pm.expect(linksCollectionItems[3].link).to.eql(\"/events\");",
+									"           pm.expect(linksCollectionItems[4].link).to.eql(\"/stories\");",
+									"             pm.expect(linksCollectionItems[5].link).to.eql(\"/shop\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "Referer",
+								"value": "{{env}}"
+							},
+							{
+								"key": "Origin",
+								"value": "{{env}}"
+							},
+							{
+								"key": "User-Agent",
+								"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer IcIPi56BO56v3BK3Y_lZGbvOFj7S1ZEwkrKGzTdCi9g"
+							},
+							{
+								"key": "Sec-Fetch-Mode",
+								"value": "cors"
+							},
+							{
+								"key": "content-type",
+								"value": "application/json"
+							}
 						],
-						"type": "text/javascript"
-					}
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query NavMain{\n  navMain(id: \"{{NavMainId}}\") {\n    image {\n      url\n      __typename\n    }\n    linksCollection(limit: 8) {\n      items {\n        text\n        link\n        externalLink\n        subNavigationCollection(limit: 6) {\n          items {\n            sys {\n              id\n              __typename\n            }\n            headline\n            linksCollection {\n              items {\n                __typename\n                ... on Event {\n                  headline\n                  slug\n                  __typename\n                }\n                ... on Story {\n                  headline\n                  slug\n                  __typename\n                }\n                ... on NavLink {\n                  text\n                  link\n                  externalLink\n                  __typename\n                }\n                ... on Tour {\n                  headline\n                  tourName\n                  slug\n                  __typename\n                }\n              }\n              __typename\n            }\n            __typename\n          }\n          __typename\n        }\n        __typename\n      }\n      __typename\n    }\n    __typename\n  }\n}\n",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{graphql.contentful.Url}}",
+							"host": [
+								"{{graphql.contentful.Url}}"
+							]
+						},
+						"description": "NavMain<Query>"
+					},
+					"response": []
 				},
+				{
+					"name": "PageHome",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "900f0743-e1e7-4551-b458-37e0990fd2d9",
+								"exec": [
+									"pm.globals.get(\"NavMainId\");"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "3195aa50-f69d-4f01-ae0b-5f315bd6d602",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Items exist\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.data.pageHome.items).not.equal(null);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "Referer",
+								"value": "{{env}}"
+							},
+							{
+								"key": "Origin",
+								"value": "{{env}}"
+							},
+							{
+								"key": "User-Agent",
+								"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer IcIPi56BO56v3BK3Y_lZGbvOFj7S1ZEwkrKGzTdCi9g"
+							},
+							{
+								"key": "Sec-Fetch-Mode",
+								"value": "cors"
+							},
+							{
+								"key": "content-type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query PageHome{\n  pageHome(id: \"{{PageHomeId}}\") {\n    heroSpeed\n    heroSlidesCollection {\n      total\n      items {\n        headline\n        summary\n        ctaText\n        series\n        image {\n          url\n          __typename\n        }\n        imageMobile {\n          url\n          __typename\n        }\n        externalLink\n        reference {\n          __typename\n          ... on Page {\n            slug\n            __typename\n          }\n          ... on Story {\n            headline\n            slug\n            cat {\n              category\n              series\n              __typename\n            }\n            summary\n            sys {\n              id\n              publishedAt\n              __typename\n            }\n            image {\n              description\n              url\n              width\n              height\n              __typename\n            }\n            video {\n              contentType\n              __typename\n            }\n            __typename\n          }\n        }\n        __typename\n      }\n      __typename\n    }\n    eventInProgress {\n      __typename\n      ... on Event {\n        headline\n        location\n        slug\n        tournamentId\n        feedId\n        startDate\n        endDate\n        __typename\n      }\n      ... on Tour {\n        headline\n        location\n        slug\n        tournamentId\n        feedId\n        startDate\n        endDate\n        __typename\n      }\n    }\n    promotedLinksCollection {\n      total\n      items {\n        headline\n        image {\n          url\n          __typename\n        }\n        externalLink\n        reference {\n          __typename\n        }\n        __typename\n      }\n      __typename\n    }\n    featuredStoriesCollection {\n      total\n      items {\n        __typename\n        ... on Slide {\n          headline\n          summary\n          ctaText\n          series\n          image {\n            url\n            __typename\n          }\n          imageMobile {\n            url\n            __typename\n          }\n          externalLink\n          reference {\n            __typename\n            ... on Page {\n              slug\n              __typename\n            }\n            ... on Story {\n              headline\n              slug\n              cat {\n                category\n                series\n                __typename\n              }\n              summary\n              sys {\n                id\n                publishedAt\n                __typename\n              }\n              image {\n                description\n                url\n                width\n                height\n                __typename\n              }\n              video {\n                contentType\n                __typename\n              }\n              __typename\n            }\n          }\n          __typename\n        }\n        ... on Story {\n          headline\n          slug\n          cat {\n            category\n            series\n            __typename\n          }\n          summary\n          sys {\n            id\n            publishedAt\n            __typename\n          }\n          image {\n            description\n            url\n            width\n            height\n            __typename\n          }\n          video {\n            contentType\n            __typename\n          }\n          __typename\n        }\n      }\n      __typename\n    }\n    reachHeadline\n    reachDescription\n    reachSlidesCollection {\n      total\n      items {\n        headline\n        summary\n        ctaText\n        series\n        image {\n          url\n          __typename\n        }\n        imageMobile {\n          url\n          __typename\n        }\n        externalLink\n        reference {\n          __typename\n          ... on Page {\n            slug\n            __typename\n          }\n          ... on Story {\n            headline\n            slug\n            cat {\n              category\n              series\n              __typename\n            }\n            summary\n            sys {\n              id\n              publishedAt\n              __typename\n            }\n            image {\n              description\n              url\n              width\n              height\n              __typename\n            }\n            video {\n              contentType\n              __typename\n            }\n            __typename\n          }\n        }\n        __typename\n      }\n      __typename\n    }\n    brandText\n    brandImage {\n      url\n      __typename\n    }\n    brandImageMobile {\n      url\n      __typename\n    }\n    metaTitle\n    metaDescription\n    metaImage {\n      url\n      __typename\n    }\n    coachEyebrow\n    coachHeadline1\n    coachHeadline2\n    coachSummary\n    coachSlidesCollection(limit: 5) {\n      items {\n        headline\n        slidesCollection(limit: 10) {\n          items {\n            headline\n            summary\n            series\n            video {\n              url\n              __typename\n            }\n            videoEmbed {\n              provider\n              id\n              __typename\n            }\n            image {\n              url\n              __typename\n            }\n            imageMobile {\n              url\n              __typename\n            }\n            reference {\n              __typename\n              slug\n            }\n            person {\n              name\n              memberType\n              image {\n                url\n                __typename\n              }\n              coachId\n              __typename\n            }\n            externalLink\n            externalLinkLabel\n            __typename\n          }\n          __typename\n        }\n        __typename\n      }\n      __typename\n    }\n    __typename\n  }\n}\n",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{graphql.contentful.Url}}",
+							"host": [
+								"{{graphql.contentful.Url}}"
+							]
+						},
+						"description": "PageHome<Query>"
+					},
+					"response": []
+				},
+				{
+					"name": "Search",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "fa58a6a2-46e4-4b0b-829a-8110ff21ce2a",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "05ad89c7-8a0f-4447-994f-cd3d3172a653",
+								"exec": [
+									"pm.environment.set(\"random_state\", _.random(0, 49));"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "accept-encoding",
+								"value": "gzip, deflate, br"
+							},
+							{
+								"key": "accept-language",
+								"value": "en-US,en;q=0.9,es-US;q=0.8,es;q=0.7"
+							},
+							{
+								"key": "authority",
+								"value": "{{env}}"
+							},
+							{
+								"key": "content-type",
+								"value": "application/json"
+							},
+							{
+								"key": "origin",
+								"value": "{{env}}"
+							},
+							{
+								"key": "referer",
+								"value": "{{env}}"
+							},
+							{
+								"key": "user-agent",
+								"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"query\":\"query search {\\n search(searchText: \\\"{{articleHeadline}}\\\", offset: 0, limit: 10) {\\n total\\n searchResults {\\n object_id\\n object_type\\n title\\n headline\\n url\\n slug\\n hero_image\\n category\\n created_date\\n }\\n }\\n}\"}"
+						},
+						"url": {
+							"raw": "{{graphql.dataFeed.Url}}",
+							"host": [
+								"{{graphql.dataFeed.Url}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Leaderboard",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "900f0743-e1e7-4551-b458-37e0990fd2d9",
+								"exec": [
+									"pm.globals.get(\"NavMainId\");"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "3195aa50-f69d-4f01-ae0b-5f315bd6d602",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									"",
+									"if (jsonData.data.tournament) {",
+									"  let players = jsonData.data.tournament.players;",
+									"",
+									"  if ( players.length > 1) {",
+									"    let player = players[_.random(0, players.length - 1)];",
+									"",
+									"    let { playerId } = player;",
+									"    pm.environment.set(\"playerId\", playerId);",
+									"  }",
+									"}",
+									"",
+									"pm.test(\"Status code is 200\", function() {",
+									"  pm.response.to.have.status(200);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "Referer",
+								"value": "{{env}}"
+							},
+							{
+								"key": "Origin",
+								"value": "{{env}}"
+							},
+							{
+								"key": "User-Agent",
+								"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer IcIPi56BO56v3BK3Y_lZGbvOFj7S1ZEwkrKGzTdCi9g"
+							},
+							{
+								"key": "Sec-Fetch-Mode",
+								"value": "cors"
+							},
+							{
+								"key": "content-type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query Leaderboard {\n  tournament(\n    tournamentId: \"R2020047\"\n    feedId: \"PGA_TOUR\"\n  ) {\n    tournamentId\n    name\n    feedId\n    currentRound\n    currentRoundState\n    rounds\n    players {\n      sortIndex\n      player {\n        firstName\n        lastName\n        playerId\n        __typename\n      }\n      currentRound\n      currentPosition\n      currentRelativePar\n      thru\n      teeTime\n      tournamentRelativePar\n      tournamentStreak\n      rounds {\n        round\n        stroke\n        thru\n        relativePar\n        __typename\n      }\n      __typename\n    }\n    __typename\n  }\n}\n",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{graphql.dataFeed.Url}}",
+							"host": [
+								"{{graphql.dataFeed.Url}}"
+							]
+						},
+						"description": "Leaderboard<Query>"
+					},
+					"response": []
+				},
+				{
+					"name": "GdprBanner",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "900f0743-e1e7-4551-b458-37e0990fd2d9",
+								"exec": [
+									"pm.globals.get(\"NavMainId\");"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "3195aa50-f69d-4f01-ae0b-5f315bd6d602",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "Referer",
+								"value": "{{env}}"
+							},
+							{
+								"key": "Origin",
+								"value": "{{env}}"
+							},
+							{
+								"key": "User-Agent",
+								"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer IcIPi56BO56v3BK3Y_lZGbvOFj7S1ZEwkrKGzTdCi9g"
+							},
+							{
+								"key": "Sec-Fetch-Mode",
+								"value": "cors"
+							},
+							{
+								"key": "content-type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query GdprBanner {\n  globalCollection(limit: 1) {\n    items {\n      gdprText {\n        json\n        links {\n          entries {\n            hyperlink {\n              __typename\n              ... on Story {\n                slug\n                sys {\n                  id\n                  __typename\n                }\n                __typename\n              }\n              ... on Event {\n                slug\n                sys {\n                  id\n                  __typename\n                }\n                __typename\n              }\n              ... on Tour {\n                slug\n                sys {\n                  id\n                  __typename\n                }\n                __typename\n              }\n              ... on Page {\n                slug\n                sys {\n                  id\n                  __typename\n                }\n                __typename\n              }\n            }\n            inline {\n              __typename\n              ... on Story {\n                slug\n                __typename\n              }\n              ... on Event {\n                slug\n                __typename\n              }\n            }\n            block {\n              __typename\n              sys {\n                id\n                __typename\n              }\n            }\n            __typename\n          }\n          __typename\n        }\n        __typename\n      }\n      __typename\n    }\n    __typename\n  }\n}\n",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{graphql.contentful.Url}}",
+							"host": [
+								"{{graphql.contentful.Url}}"
+							]
+						},
+						"description": "GdprBanner<Query>"
+					},
+					"response": []
+				},
+				{
+					"name": "Footer",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "900f0743-e1e7-4551-b458-37e0990fd2d9",
+								"exec": [
+									"pm.globals.get(\"NavMainId\");"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "3195aa50-f69d-4f01-ae0b-5f315bd6d602",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "Referer",
+								"value": "{{env}}"
+							},
+							{
+								"key": "Origin",
+								"value": "{{env}}"
+							},
+							{
+								"key": "User-Agent",
+								"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer IcIPi56BO56v3BK3Y_lZGbvOFj7S1ZEwkrKGzTdCi9g"
+							},
+							{
+								"key": "Sec-Fetch-Mode",
+								"value": "cors"
+							},
+							{
+								"key": "content-type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query Footer {\n  footer(id: \"{{FooterId}}\") {\n    copyright\n    emailHeadline\n    emailDescription\n    linksCollection {\n      items {\n        headline\n        linksCollection {\n          items {\n            __typename\n            ... on Event {\n              headline\n              slug\n              __typename\n            }\n            ... on Story {\n              headline\n              slug\n              __typename\n            }\n            ... on NavLink {\n              text\n              link\n              externalLink\n              __typename\n            }\n            ... on Tour {\n              headline\n              slug\n              __typename\n            }\n          }\n          __typename\n        }\n        __typename\n      }\n      __typename\n    }\n    auxilliaryCollection {\n      items {\n        headline\n        slug\n        __typename\n      }\n      __typename\n    }\n    socialCollection {\n      items {\n        title\n        link\n        headline\n        __typename\n      }\n      __typename\n    }\n    __typename\n  }\n}\n",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{graphql.contentful.Url}}",
+							"host": [
+								"{{graphql.contentful.Url}}"
+							]
+						},
+						"description": "Footer<Query>"
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Play",
+			"item": [
+				{
+					"name": "CoursesLanding",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "900f0743-e1e7-4551-b458-37e0990fd2d9",
+								"exec": [
+									"pm.globals.get(\"NavMainId\");"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "3195aa50-f69d-4f01-ae0b-5f315bd6d602",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "Referer",
+								"value": "{{env}}"
+							},
+							{
+								"key": "Origin",
+								"value": "{{env}}"
+							},
+							{
+								"key": "User-Agent",
+								"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer IcIPi56BO56v3BK3Y_lZGbvOFj7S1ZEwkrKGzTdCi9g"
+							},
+							{
+								"key": "Sec-Fetch-Mode",
+								"value": "cors"
+							},
+							{
+								"key": "content-type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query CoursesLanding {\n  coursesLanding(id: \"{{CoursesLandingId}}\") {\n    heroHeadline\n    metaTitle\n    metaDescription\n    metaImage {\n      url\n      __typename\n    }\n    heroImage {\n      url\n      __typename\n    }\n    featuredCourseId\n    featuredCourseImage {\n      url\n      __typename\n    }\n    destinationsHeadline\n    featuredStory {\n      headline\n      slug\n      cat {\n        category\n        series\n        __typename\n      }\n      summary\n      sys {\n        id\n        publishedAt\n        __typename\n      }\n      image {\n        description\n        url\n        width\n        height\n        __typename\n      }\n      video {\n        contentType\n        __typename\n      }\n      __typename\n    }\n    storiesCollection {\n      items {\n        headline\n        slug\n        cat {\n          category\n          series\n          __typename\n        }\n        summary\n        sys {\n          id\n          publishedAt\n          __typename\n        }\n        image {\n          description\n          url\n          width\n          height\n          __typename\n        }\n        video {\n          contentType\n          __typename\n        }\n        __typename\n      }\n      __typename\n    }\n    __typename\n  }\n}\n",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{graphql.contentful.Url}}",
+							"host": [
+								"{{graphql.contentful.Url}}"
+							]
+						},
+						"description": "CoursesLanding<Query>"
+					},
+					"response": []
+				},
+				{
+					"name": "SearchCourses",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "900f0743-e1e7-4551-b458-37e0990fd2d9",
+								"exec": [
+									"pm.globals.get(\"NavMainId\");"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "3195aa50-f69d-4f01-ae0b-5f315bd6d602",
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"let facilityName = jsonData.data.searchCourses;",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    pm.environment.set(\"facility_id\", facilityName[0].facility_id);",
+									"   ",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "Referer",
+								"value": "{{env}}"
+							},
+							{
+								"key": "Origin",
+								"value": "{{env}}"
+							},
+							{
+								"key": "User-Agent",
+								"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer IcIPi56BO56v3BK3Y_lZGbvOFj7S1ZEwkrKGzTdCi9g"
+							},
+							{
+								"key": "Sec-Fetch-Mode",
+								"value": "cors"
+							},
+							{
+								"key": "content-type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query searchCourses {\n searchCourses(searchText: \"{{usa_state}}\") {\n    name\n    facility_name\n    city\n    state\n    state_name\n    zip\n    phone\n    section_name\n    photo_facility\n    course_type_label\n    address1\n    address2\n    address3\n    address4    \n    facility_id\n    universal_id\n    greenhouse_id\n    _geoloc{\n        lat\n        lng\n    }\n }\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{graphql.dataFeed.Url}}",
+							"host": [
+								"{{graphql.dataFeed.Url}}"
+							]
+						},
+						"description": "SearchCourses<Query>"
+					},
+					"response": []
+				},
+				{
+					"name": "ListStates",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "900f0743-e1e7-4551-b458-37e0990fd2d9",
+								"exec": [
+									"pm.globals.get(\"NavMainId\");"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "3195aa50-f69d-4f01-ae0b-5f315bd6d602",
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"let randomState= pm.environment.get(\"random_state\"); ",
+									"let numberStates= jsonData.data.listStates.length;",
+									"let listStates = jsonData.data.listStates[randomState];",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    pm.expect(jsonData.listStates).not.eql(null);",
+									"    pm.environment.set(\"usa_state\", listStates.state);",
+									"    pm.environment.set(\"usa_state_code\", listStates.stateCode);",
+									"    ",
+									"});",
+									"",
+									"pm.test(\"Returns 51 states\", function () {",
+									"    pm.expect(numberStates).to.eql(51);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "Referer",
+								"value": "{{env}}"
+							},
+							{
+								"key": "Origin",
+								"value": "{{env}}"
+							},
+							{
+								"key": "User-Agent",
+								"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer IcIPi56BO56v3BK3Y_lZGbvOFj7S1ZEwkrKGzTdCi9g"
+							},
+							{
+								"key": "Sec-Fetch-Mode",
+								"value": "cors"
+							},
+							{
+								"key": "content-type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query listStates {\n listStates {\n state\n stateCode\n }\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{graphql.dataFeed.Url}}",
+							"host": [
+								"{{graphql.dataFeed.Url}}"
+							]
+						},
+						"description": "ListStates<Query>"
+					},
+					"response": []
+				},
+				{
+					"name": "ListCities",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "fa58a6a2-46e4-4b0b-829a-8110ff21ce2a",
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"let listCities = jsonData.data.listCities;",
+									"let usaCity = listCities[_.random(0,listCities.length)].city;",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    pm.environment.set(\"usa_city\", usaCity);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "accept-encoding",
+								"value": "gzip, deflate, br"
+							},
+							{
+								"key": "accept-language",
+								"value": "en-US,en;q=0.9,es-US;q=0.8,es;q=0.7"
+							},
+							{
+								"key": "authority",
+								"value": "{{env}}"
+							},
+							{
+								"key": "content-type",
+								"value": "application/json"
+							},
+							{
+								"key": "origin",
+								"value": "{{env}}"
+							},
+							{
+								"key": "referer",
+								"value": "{{env}}"
+							},
+							{
+								"key": "user-agent",
+								"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query listCities {\n listCities (stateCode: \"{{usa_state_code}}\") {\n   city\n   courseCount\n }\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{graphql.dataFeed.Url}}",
+							"host": [
+								"{{graphql.dataFeed.Url}}"
+							]
+						},
+						"description": "This endpoint is to support the page showing the list of cities for a given state.\n"
+					},
+					"response": []
+				},
+				{
+					"name": "CityCourses",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "fa58a6a2-46e4-4b0b-829a-8110ff21ce2a",
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"let cityCourses = jsonData.data.cityCourses;",
+									"",
+									"let cityName= pm.environment.get(\"usa_city\");",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"pm.response.to.have.status(200);",
+									"});",
+									"",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "accept-encoding",
+								"value": "gzip, deflate, br"
+							},
+							{
+								"key": "accept-language",
+								"value": "en-US,en;q=0.9,es-US;q=0.8,es;q=0.7"
+							},
+							{
+								"key": "authority",
+								"value": "{{env}}"
+							},
+							{
+								"key": "content-type",
+								"value": "application/json"
+							},
+							{
+								"key": "origin",
+								"value": "{{env}}"
+							},
+							{
+								"key": "referer",
+								"value": "{{env}}"
+							},
+							{
+								"key": "user-agent",
+								"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query cityCourses {\n cityCourses (state_name: \"{{usa_state}}\", city: \"{{usa_city}}\") {\n    name\n    facility_name\n    city\n    state\n    state_name\n    zip\n    phone\n    section_name\n    photo_facility\n    course_type_label\n    address1\n    address2\n    address3\n    address4    \n    facility_id\n    universal_id\n    greenhouse_id\n     _geoloc{\n         lat\n         lng\n     }\n     members{\n         greenhouse_id\n    universal_id\n    member_number\n    name\n    profile_name\n    first_name\n    last_name\n    city\n    state\n    highest_ranked\n    member_class\n    member_type\n    photo_profile\n    member_class_description\n     }\n     \n }\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{graphql.dataFeed.Url}}",
+							"host": [
+								"{{graphql.dataFeed.Url}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Facility",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "fa58a6a2-46e4-4b0b-829a-8110ff21ce2a",
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"let zipCode = jsonData.data.facility.zip;",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    var zip = zipCode.substring(0, 5);",
+									"    pm.environment.set(\"zipCode\", zip);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "accept-encoding",
+								"value": "gzip, deflate, br"
+							},
+							{
+								"key": "accept-language",
+								"value": "en-US,en;q=0.9,es-US;q=0.8,es;q=0.7"
+							},
+							{
+								"key": "authority",
+								"value": "{{env}}"
+							},
+							{
+								"key": "content-type",
+								"value": "application/json"
+							},
+							{
+								"key": "origin",
+								"value": "{{env}}"
+							},
+							{
+								"key": "referer",
+								"value": "{{env}}"
+							},
+							{
+								"key": "user-agent",
+								"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query facility {\n  facility(facility_id: \"{{facility_id}}\") {\n    name\n    facility_name\n    zip\n    members {\n      universal_id\n      first_name\n      last_name\n      member_type\n      member_class_description\n    }\n  }\n}\n",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{graphql.dataFeed.Url}}",
+							"host": [
+								"{{graphql.dataFeed.Url}}"
+							]
+						},
+						"description": "CityCourses"
+					},
+					"response": []
+				}
+			],
+			"event": [
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "05ad89c7-8a0f-4447-994f-cd3d3172a653",
+						"id": "d2ae7fe9-fe88-4fb8-817f-e4753948d425",
+						"type": "text/javascript",
 						"exec": [
-							"pm.environment.set(\"random_state\", _.random(0, 49));"
-						],
-						"type": "text/javascript"
+							""
+						]
 					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "accept",
-						"value": "*/*"
-					},
-					{
-						"key": "accept-encoding",
-						"value": "gzip, deflate, br"
-					},
-					{
-						"key": "accept-language",
-						"value": "en-US,en;q=0.9,es-US;q=0.8,es;q=0.7"
-					},
-					{
-						"key": "authority",
-						"value": "{{PgaURL}}"
-					},
-					{
-						"key": "content-type",
-						"value": "application/json"
-					},
-					{
-						"key": "origin",
-						"value": "{{PgaURL}}"
-					},
-					{
-						"key": "referer",
-						"value": "{{PgaURL}}"
-					},
-					{
-						"key": "user-agent",
-						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\"query\":\"query listStates {\\n listStates {\\n state\\n stateCode\\n }\\n}\"}"
 				},
-				"url": {
-					"raw": "{{PgaURL}}",
-					"host": [
-						"{{PgaURL}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "listCities",
-			"event": [
 				{
 					"listen": "test",
 					"script": {
-						"id": "fa58a6a2-46e4-4b0b-829a-8110ff21ce2a",
+						"id": "0d8e2c00-ee39-42b5-a1fb-ed702a50682e",
+						"type": "text/javascript",
 						"exec": [
-							"const jsonData = pm.response.json();",
-							"let listCities = jsonData.data.listCities;",
-							"let usaCity = listCities[_.random(0,listCities.length)].city;",
-							"",
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
-							"    pm.environment.set(\"usa_city\", usaCity);",
-							"});",
-							"",
 							""
-						],
-						"type": "text/javascript"
+						]
 					}
 				}
 			],
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "accept",
-						"value": "*/*"
-					},
-					{
-						"key": "accept-encoding",
-						"value": "gzip, deflate, br"
-					},
-					{
-						"key": "accept-language",
-						"value": "en-US,en;q=0.9,es-US;q=0.8,es;q=0.7"
-					},
-					{
-						"key": "authority",
-						"value": "{{PgaURL}}"
-					},
-					{
-						"key": "content-type",
-						"value": "application/json"
-					},
-					{
-						"key": "origin",
-						"value": "{{PgaURL}}"
-					},
-					{
-						"key": "referer",
-						"value": "{{PgaURL}}"
-					},
-					{
-						"key": "user-agent",
-						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\"query\":\"query listCities {\\n listCities (stateCode: \\\"{{usa_state_code}}\\\") {\\n city\\n courseCount\\n }\\n}\"}"
-				},
-				"url": {
-					"raw": "{{PgaURL}}",
-					"host": [
-						"{{PgaURL}}"
-					]
-				},
-				"description": "This endpoint is to support the page showing the list of cities for a given state.\n"
-			},
-			"response": []
+			"protocolProfileBehavior": {}
 		},
 		{
-			"name": "searchCourses",
-			"event": [
+			"name": "Learn",
+			"item": [
 				{
-					"listen": "test",
-					"script": {
-						"id": "fa58a6a2-46e4-4b0b-829a-8110ff21ce2a",
-						"exec": [
-							"const jsonData = pm.response.json();",
-							"let facilityName = jsonData.data.searchCourses;",
-							"let usaCity= pm.environment.get(\"usa_city\");",
-							"let usaState= pm.environment.get(\"usa_state\");",
-							"",
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
-							"    pm.environment.set(\"facility_id\", facilityName[0].facility_id);",
-							"   ",
-							"});",
-							""
+					"name": "LearnPage",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "900f0743-e1e7-4551-b458-37e0990fd2d9",
+								"exec": [
+									"pm.globals.get(\"NavMainId\");"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "3195aa50-f69d-4f01-ae0b-5f315bd6d602",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "Referer",
+								"value": "{{env}}"
+							},
+							{
+								"key": "Origin",
+								"value": "{{env}}"
+							},
+							{
+								"key": "User-Agent",
+								"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer IcIPi56BO56v3BK3Y_lZGbvOFj7S1ZEwkrKGzTdCi9g"
+							},
+							{
+								"key": "Sec-Fetch-Mode",
+								"value": "cors"
+							},
+							{
+								"key": "content-type",
+								"value": "application/json"
+							}
 						],
-						"type": "text/javascript"
-					}
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query LearnPage {\n  learn(id: \"{{LearnPageId}}\") {\n    headline\n    metaTitle\n    metaDescription\n    metaImage {\n      url\n      __typename\n    }\n    heroSlidesCollection {\n      items {\n        headline\n        summary\n        ctaText\n        series\n        image {\n          url\n          __typename\n        }\n        imageMobile {\n          url\n          __typename\n        }\n        externalLink\n        reference {\n          __typename\n          ... on Story {\n            headline\n            slug\n            cat {\n              category\n              series\n              __typename\n            }\n            summary\n            sys {\n              id\n              publishedAt\n              __typename\n            }\n            image {\n              description\n              url\n              width\n              height\n              __typename\n            }\n            video {\n              contentType\n              __typename\n            }\n            __typename\n          }\n        }\n        __typename\n      }\n      __typename\n    }\n    heroSpeed\n    featuredCollection {\n      items {\n        headline\n        summary\n        ctaText\n        series\n        image {\n          url\n          __typename\n        }\n        imageMobile {\n          url\n          __typename\n        }\n        externalLink\n        reference {\n          __typename\n          ... on Story {\n            headline\n            slug\n            cat {\n              category\n              series\n              __typename\n            }\n            summary\n            sys {\n              id\n              publishedAt\n              __typename\n            }\n            image {\n              description\n              url\n              width\n              height\n              __typename\n            }\n            video {\n              contentType\n              __typename\n            }\n            __typename\n          }\n        }\n        __typename\n      }\n      __typename\n    }\n    skillGroupsCollection(limit: 6) {\n      items {\n        headline\n        articlesCollection {\n          items {\n            headline\n            slug\n            cat {\n              category\n              series\n              __typename\n            }\n            summary\n            sys {\n              id\n              publishedAt\n              __typename\n            }\n            image {\n              description\n              url\n              width\n              height\n              __typename\n            }\n            video {\n              contentType\n              __typename\n            }\n            __typename\n          }\n          __typename\n        }\n        __typename\n      }\n      __typename\n    }\n    __typename\n  }\n}\n",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{graphql.contentful.Url}}",
+							"host": [
+								"{{graphql.contentful.Url}}"
+							]
+						},
+						"description": "LearnPage<Query>"
+					},
+					"response": []
 				}
 			],
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "accept",
-						"value": "*/*"
-					},
-					{
-						"key": "accept-encoding",
-						"value": "gzip, deflate, br"
-					},
-					{
-						"key": "accept-language",
-						"value": "en-US,en;q=0.9,es-US;q=0.8,es;q=0.7"
-					},
-					{
-						"key": "authority",
-						"value": "{{PgaURL}}"
-					},
-					{
-						"key": "content-type",
-						"value": "application/json"
-					},
-					{
-						"key": "origin",
-						"value": "{{PgaURL}}"
-					},
-					{
-						"key": "referer",
-						"value": "{{PgaURL}}"
-					},
-					{
-						"key": "user-agent",
-						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\"query\":\"query searchCourses {\\n searchCourses(searchText: \\\"Georgia\\\") {\\n name\\n facility_name\\n city\\n state\\n state_name\\n zip\\n phone\\n section_name\\n photo_facility\\n course_type_label\\n address1\\n address2\\n address3\\n address4\\n facility_id\\n universal_id\\n greenhouse_id\\n _geoloc {\\n lat\\n lng\\n }\\n members {\\n greenhouse_id\\n universal_id\\n member_number\\n name\\n profile_name\\n first_name\\n last_name\\n city\\n state\\n highest_ranked\\n member_type\\n member_class\\n photo_profile\\n }\\n }\\n}\\n\"}"
-				},
-				"url": {
-					"raw": "{{PgaURL}}",
-					"host": [
-						"{{PgaURL}}"
-					]
-				}
-			},
-			"response": []
+			"protocolProfileBehavior": {}
 		},
 		{
-			"name": "cityCourses",
-			"event": [
+			"name": "Events",
+			"item": [
 				{
-					"listen": "test",
-					"script": {
-						"id": "fa58a6a2-46e4-4b0b-829a-8110ff21ce2a",
-						"exec": [
-							"const jsonData = pm.response.json();",
-							"let cityCourses = jsonData.data.cityCourses;",
-							"",
-							"let cityName= pm.environment.get(\"usa_city\");",
-							"",
-							"pm.test(\"Status code is 200\", function () {",
-							"pm.response.to.have.status(200);",
-							"});",
-							"",
-							"",
-							"",
-							""
+					"name": "EventsLanding",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "900f0743-e1e7-4551-b458-37e0990fd2d9",
+								"exec": [
+									"pm.globals.get(\"NavMainId\");"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "3195aa50-f69d-4f01-ae0b-5f315bd6d602",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "Referer",
+								"value": "{{env}}"
+							},
+							{
+								"key": "Origin",
+								"value": "{{env}}"
+							},
+							{
+								"key": "User-Agent",
+								"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer IcIPi56BO56v3BK3Y_lZGbvOFj7S1ZEwkrKGzTdCi9g"
+							},
+							{
+								"key": "Sec-Fetch-Mode",
+								"value": "cors"
+							},
+							{
+								"key": "content-type",
+								"value": "application/json"
+							}
 						],
-						"type": "text/javascript"
-					}
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query Stories{\n  storiesPage(id: \"{{StoriesLandingId}}\") {\n    heroText\n    label\n    heroImage {\n      description\n      contentType\n      url\n      width\n      height\n      __typename\n    }\n    leadStory {\n      headline\n      slug\n      cat {\n        category\n        series\n        __typename\n      }\n      summary\n      sys {\n        id\n        publishedAt\n        __typename\n      }\n      image {\n        description\n        url\n        width\n        height\n        __typename\n      }\n      video {\n        contentType\n        __typename\n      }\n      __typename\n    }\n    metaTitle\n    metaDescription\n    topStoriesCollection {\n      items {\n        headline\n        slug\n        cat {\n          category\n          series\n          __typename\n        }\n        summary\n        sys {\n          id\n          publishedAt\n          __typename\n        }\n        image {\n          description\n          url\n          width\n          height\n          __typename\n        }\n        video {\n          contentType\n          __typename\n        }\n        __typename\n      }\n      __typename\n    }\n    __typename\n  }\n}\n",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{graphql.contentful.Url}}",
+							"host": [
+								"{{graphql.contentful.Url}}"
+							]
+						},
+						"description": "EventsLanding<Query>"
+					},
+					"response": []
+				},
+				{
+					"name": "tournaments",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "fa58a6a2-46e4-4b0b-829a-8110ff21ce2a",
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"let tournaments = jsonData.data.tournaments;",
+									"",
+									"let tournament = jsonData.data.tournaments[_.random(0, tournaments.length - 1)];",
+									"",
+									"let {tournamentId: tournament_id,feedId: feedId, currentRoundState }  = tournament;",
+									"",
+									"pm.test(\"Status code is 200\", function() {",
+									"  pm.response.to.have.status(200);",
+									"  pm.environment.set(\"tournament_id\", tournament_id);",
+									"  pm.environment.set(\"tournament_currentRoundState\", currentRoundState);",
+									"  pm.environment.set(\"tournament_feedId\", feedId);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "feca5541-5b90-44f8-93d1-302158046083",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "accept-encoding",
+								"value": "gzip, deflate, br"
+							},
+							{
+								"key": "accept-language",
+								"value": "en-US,en;q=0.9,es-US;q=0.8,es;q=0.7"
+							},
+							{
+								"key": "authority",
+								"value": "{{env}}"
+							},
+							{
+								"key": "content-type",
+								"value": "application/json"
+							},
+							{
+								"key": "origin",
+								"value": "{{env}}"
+							},
+							{
+								"key": "referer",
+								"value": "{{env}}"
+							},
+							{
+								"key": "user-agent",
+								"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"query\":\"query tournaments {\\n tournaments {\\n name\\n feedId\\n tournamentId\\n currentRoundState\\n state\\n }\\n}\\n\"}"
+						},
+						"url": {
+							"raw": "{{graphql.dataFeed.Url}}",
+							"host": [
+								"{{graphql.dataFeed.Url}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "tournament",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "fa58a6a2-46e4-4b0b-829a-8110ff21ce2a",
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"if (jsonData.data.tournament) {",
+									"  let players = jsonData.data.tournament.players;",
+									"",
+									"  if ( players.length > 1) {",
+									"    let player = players[_.random(0, players.length - 1)];",
+									"",
+									"    let { playerId } = player;",
+									"    pm.environment.set(\"playerId\", playerId);",
+									"  }",
+									"}",
+									"",
+									"pm.test(\"Status code is 200\", function() {",
+									"  pm.response.to.have.status(200);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "accept-encoding",
+								"value": "gzip, deflate, br"
+							},
+							{
+								"key": "accept-language",
+								"value": "en-US,en;q=0.9,es-US;q=0.8,es;q=0.7"
+							},
+							{
+								"key": "authority",
+								"value": "{{env}}"
+							},
+							{
+								"key": "content-type",
+								"value": "application/json"
+							},
+							{
+								"key": "origin",
+								"value": "{{env}}"
+							},
+							{
+								"key": "referer",
+								"value": "{{env}}"
+							},
+							{
+								"key": "user-agent",
+								"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"query\":\"query tournament {\\n tournament(\\n tournamentId: \\\"R2020522\\\"\\n feedId: \\\"PGA_TOUR\\\"\\n ) {\\n name\\n tournamentId\\n feedId\\n currentRoundState\\n location\\n players {\\n playerId\\n currentPosition\\n currentRound\\n thru\\n feedId\\n teeTime\\n }\\n }\\n}\\n\"}"
+						},
+						"url": {
+							"raw": "{{graphql.dataFeed.Url}}",
+							"host": [
+								"{{graphql.dataFeed.Url}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "scorecard",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "fa58a6a2-46e4-4b0b-829a-8110ff21ce2a",
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"pm.test(\"Status code is 200\", function () {",
+									"pm.response.to.have.status(200);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "accept-encoding",
+								"value": "gzip, deflate, br"
+							},
+							{
+								"key": "accept-language",
+								"value": "en-US,en;q=0.9,es-US;q=0.8,es;q=0.7"
+							},
+							{
+								"key": "authority",
+								"value": "{{env}}"
+							},
+							{
+								"key": "content-type",
+								"value": "application/json"
+							},
+							{
+								"key": "origin",
+								"value": "{{env}}"
+							},
+							{
+								"key": "referer",
+								"value": "{{env}}"
+							},
+							{
+								"key": "user-agent",
+								"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"query\":\"query scorecard {\\n scorecard(tournamentId: \\\"{{tournament_id}}\\\", playerId: \\\"{{playerId}}\\\",feedId:\\\"{{tournament_feedId}}\\\") {\\n back\\n courseCode\\n front\\n holes {\\n inTheHoleTs\\n courseCode\\n hole\\n par\\n playerId\\n rRelativePar\\n round\\n score\\n tRelativePar\\n tournamentId\\n yardsActual\\n yardsOfficial\\n }\\n playerId\\n relativePar\\n round\\n startTee\\n stroke\\n teeTime\\n thru\\n tournamentId\\n utcOffset\\n }\\n }\\n \"}"
+						},
+						"url": {
+							"raw": "{{graphql.dataFeed.Url}}",
+							"host": [
+								"{{graphql.dataFeed.Url}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "player",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "fa58a6a2-46e4-4b0b-829a-8110ff21ce2a",
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"pm.test(\"Status code is 200\", function () {",
+									"pm.response.to.have.status(200);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "accept-encoding",
+								"value": "gzip, deflate, br"
+							},
+							{
+								"key": "accept-language",
+								"value": "en-US,en;q=0.9,es-US;q=0.8,es;q=0.7"
+							},
+							{
+								"key": "authority",
+								"value": "{{env}}"
+							},
+							{
+								"key": "content-type",
+								"value": "application/json"
+							},
+							{
+								"key": "origin",
+								"value": "{{env}}"
+							},
+							{
+								"key": "referer",
+								"value": "{{env}}"
+							},
+							{
+								"key": "user-agent",
+								"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"query\":\"query player {\\n player(playerId: \\\"{{playerId}}\\\", feedId: \\\"PGA_TOUR\\\") {\\n firstName\\n lastName\\n playerId\\n feedId\\n }\\n}\\n\"}"
+						},
+						"url": {
+							"raw": "{{graphql.dataFeed.Url}}",
+							"host": [
+								"{{graphql.dataFeed.Url}}"
+							]
+						}
+					},
+					"response": []
 				}
 			],
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "accept",
-						"value": "*/*"
-					},
-					{
-						"key": "accept-encoding",
-						"value": "gzip, deflate, br"
-					},
-					{
-						"key": "accept-language",
-						"value": "en-US,en;q=0.9,es-US;q=0.8,es;q=0.7"
-					},
-					{
-						"key": "authority",
-						"value": "{{PgaURL}}"
-					},
-					{
-						"key": "content-type",
-						"value": "application/json"
-					},
-					{
-						"key": "origin",
-						"value": "{{PgaURL}}"
-					},
-					{
-						"key": "referer",
-						"value": "{{PgaURL}}"
-					},
-					{
-						"key": "user-agent",
-						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\"query\":\"query cityCourses {\\n cityCourses (state_name: \\\"{{usa_state}}\\\", city: \\\"{{usa_city}}\\\") {\\n name\\n facility_name\\n city\\n state\\n state_name\\n zip\\n phone\\n section_name\\n photo_facility\\n course_type_label\\n address1\\n address2\\n address3\\n address4 \\n facility_id\\n universal_id\\n greenhouse_id\\n _geoloc{\\n lat\\n lng\\n }\\n members{\\n greenhouse_id\\n universal_id\\n member_number\\n name\\n profile_name\\n first_name\\n last_name\\n city\\n state\\n highest_ranked\\n member_class\\n member_type\\n photo_profile\\n member_class_description\\n }\\n \\n }\\n}\"}"
-				},
-				"url": {
-					"raw": "{{PgaURL}}",
-					"host": [
-						"{{PgaURL}}"
-					]
-				}
-			},
-			"response": []
+			"protocolProfileBehavior": {}
 		},
 		{
-			"name": "facility",
-			"event": [
+			"name": "Stories",
+			"item": [
 				{
-					"listen": "test",
-					"script": {
-						"id": "fa58a6a2-46e4-4b0b-829a-8110ff21ce2a",
-						"exec": [
-							"const jsonData = pm.response.json();",
-							"let zipCode = jsonData.data.facility.zip;",
-							"",
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
-							"    var zip = zipCode.substring(0, 5);",
-							"    pm.environment.set(\"zipCode\", zip);",
-							"});",
-							"",
-							""
+					"name": "Stories Landing",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "900f0743-e1e7-4551-b458-37e0990fd2d9",
+								"exec": [
+									"pm.globals.get(\"NavMainId\");"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "3195aa50-f69d-4f01-ae0b-5f315bd6d602",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "Referer",
+								"value": "{{env}}"
+							},
+							{
+								"key": "Origin",
+								"value": "{{env}}"
+							},
+							{
+								"key": "User-Agent",
+								"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer IcIPi56BO56v3BK3Y_lZGbvOFj7S1ZEwkrKGzTdCi9g"
+							},
+							{
+								"key": "Sec-Fetch-Mode",
+								"value": "cors"
+							},
+							{
+								"key": "content-type",
+								"value": "application/json"
+							}
 						],
-						"type": "text/javascript"
-					}
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query PageShop {\n  shop(id: \"5bfJf1PjDN4abGI9c8Cz5L\") {\n    title\n    metaTitle\n    metaDescription\n    metaImage {\n      url\n      __typename\n    }\n    apparelHeadline\n    heroCollection {\n      items {\n        headline\n        image {\n          url\n          __typename\n        }\n        series\n        ctaText\n        summary\n        externalLink\n        imageMobile {\n          url\n          __typename\n        }\n        __typename\n      }\n      __typename\n    }\n    apparelCollection {\n      items {\n        headline\n        image {\n          url\n          __typename\n        }\n        series\n        ctaText\n        summary\n        externalLink\n        imageMobile {\n          url\n          __typename\n        }\n        __typename\n      }\n      __typename\n    }\n    __typename\n  }\n}\n",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{graphql.contentful.Url}}",
+							"host": [
+								"{{graphql.contentful.Url}}"
+							]
+						},
+						"description": "Stories<Query>"
+					},
+					"response": []
+				},
+				{
+					"name": "StoriesBySlug",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "900f0743-e1e7-4551-b458-37e0990fd2d9",
+								"exec": [
+									"pm.globals.get(\"NavMainId\");"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "3195aa50-f69d-4f01-ae0b-5f315bd6d602",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "Referer",
+								"value": "{{env}}"
+							},
+							{
+								"key": "Origin",
+								"value": "{{env}}"
+							},
+							{
+								"key": "User-Agent",
+								"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer IcIPi56BO56v3BK3Y_lZGbvOFj7S1ZEwkrKGzTdCi9g"
+							},
+							{
+								"key": "Sec-Fetch-Mode",
+								"value": "cors"
+							},
+							{
+								"key": "content-type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query BySlug {\n  storyCollection(limit: 1, where: {slug: \"united-states-completes-team-roster-for-29th-pga-cup\"}) {\n    total\n    items {\n      title\n      headline\n      slug\n      cat {\n        category\n        series\n        __typename\n      }\n      author\n      body {\n        json\n        links {\n          entries {\n            hyperlink {\n              __typename\n              ... on Story {\n                slug\n                sys {\n                  id\n                  __typename\n                }\n                __typename\n              }\n              ... on Event {\n                slug\n                sys {\n                  id\n                  __typename\n                }\n                __typename\n              }\n              ... on Tour {\n                slug\n                sys {\n                  id\n                  __typename\n                }\n                __typename\n              }\n              ... on Page {\n                slug\n                sys {\n                  id\n                  __typename\n                }\n                __typename\n              }\n            }\n            inline {\n              __typename\n              ... on Story {\n                slug\n                __typename\n              }\n              ... on Event {\n                slug\n                __typename\n              }\n            }\n            block {\n              __typename\n              sys {\n                id\n                __typename\n              }\n            }\n            __typename\n          }\n          __typename\n        }\n        __typename\n      }\n      sys {\n        publishedAt\n        firstPublishedAt\n        __typename\n      }\n      image {\n        contentType\n        url\n        description\n        height\n        title\n        width\n        __typename\n      }\n      video {\n        contentType\n        url\n        description\n        title\n        __typename\n      }\n      heroVideoEmbed {\n        provider\n        id\n        __typename\n      }\n      heroSource\n      heroCaption\n      tagsCollection {\n        items {\n          label\n          __typename\n        }\n        __typename\n      }\n      person {\n        name\n        image {\n          url\n          __typename\n        }\n        position\n        organization\n        youtube\n        coachId\n        email\n        shortBio\n        location\n        memberType\n        __typename\n      }\n      summary\n      recommended {\n        headline\n        articlesCollection {\n          total\n          items {\n            headline\n            slug\n            cat {\n              category\n              series\n              __typename\n            }\n            summary\n            sys {\n              id\n              publishedAt\n              __typename\n            }\n            image {\n              description\n              url\n              width\n              height\n              __typename\n            }\n            video {\n              contentType\n              __typename\n            }\n            __typename\n          }\n          __typename\n        }\n        __typename\n      }\n      related {\n        headline\n        linksCollection {\n          items {\n            headline\n            slug\n            cat {\n              category\n              series\n              __typename\n            }\n            summary\n            sys {\n              id\n              publishedAt\n              __typename\n            }\n            image {\n              description\n              url\n              width\n              height\n              __typename\n            }\n            video {\n              contentType\n              __typename\n            }\n            __typename\n          }\n          __typename\n        }\n        __typename\n      }\n      __typename\n    }\n    __typename\n  }\n}\n",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{graphql.contentful.Url}}",
+							"host": [
+								"{{graphql.contentful.Url}}"
+							]
+						},
+						"description": "BySlug<Query>"
+					},
+					"response": []
+				},
+				{
+					"name": "allArticles",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "fa58a6a2-46e4-4b0b-829a-8110ff21ce2a",
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});let articles = jsonData.data.allArticles.articles;",
+									"let articleNid = parseInt(jsonData.data.allArticles.articles[_.random(0, 3)].nid);",
+									"let articleHeadline= jsonData.data.allArticles.articles[_.random(0, articles.length-1 )].headline;",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    console.log(`Total articles is : ${jsonData.data.allArticles.total}`);",
+									"    pm.environment.set(\"articleNids\", articleNid);",
+									"      pm.environment.set(\"articleHeadline\", articleHeadline);",
+									"});",
+									"",
+									"pm.test(\"Articles Exist\", function () {",
+									"   pm.expect(jsonData.data).not.eql(undefined);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "1948ae57-7c0f-49ef-a2de-b3f7176227ce",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "accept-encoding",
+								"value": "gzip, deflate, br"
+							},
+							{
+								"key": "accept-language",
+								"value": "en-US,en;q=0.9,es-US;q=0.8,es;q=0.7"
+							},
+							{
+								"key": "authority",
+								"value": "{{env}}"
+							},
+							{
+								"key": "content-type",
+								"value": "application/json"
+							},
+							{
+								"key": "origin",
+								"value": "{{env}}"
+							},
+							{
+								"key": "referer",
+								"value": "{{env}}"
+							},
+							{
+								"key": "user-agent",
+								"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"query\":\"query {\\n allArticles(offset: 1, limit: 5, ordertype: asc) {\\n total\\n articles {\\n nid\\n title\\n headline\\n category\\n author\\n author_type\\n hero_image\\n hero_video\\n hero_caption\\n hero_source\\n body\\n related_articles\\n related\\n tags\\n url\\n slug\\n object_type\\n created_date\\n updated_date\\n }\\n }\\n}\\n\"}\n"
+						},
+						"url": {
+							"raw": "{{graphql.dataFeed.Url}}",
+							"host": [
+								"{{graphql.dataFeed.Url}}"
+							]
+						},
+						"description": "In order to obtain all articles stored in our legacy articles database."
+					},
+					"response": []
+				},
+				{
+					"name": "articleById",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "fa58a6a2-46e4-4b0b-829a-8110ff21ce2a",
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"pm.environment.get(\"articleNid\");",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Article Exist\", function () {",
+									"   pm.expect(jsonData.data).not.eql(undefined);",
+									"});",
+									"",
+									"pm.test(\"Article contains nid\", function () {",
+									"    let articleId = jsonData.data.articleById[0].nid;",
+									"    pm.expect(articleId).not.eql(undefined);",
+									"    console.log(`The article id is ${articleId}`)",
+									"});",
+									"",
+									"pm.test(\"Article contains title\", function () {",
+									"    let articleTitle = jsonData.data.articleById[0].title;",
+									"    pm.expect(articleTitle).not.eql(undefined);",
+									"    console.log(`The article id is ${articleTitle}`)",
+									"});",
+									"",
+									"pm.test(\"Article contains events category\", function () {",
+									"    let articleCategory= jsonData.data.articleById[0].category;",
+									"    pm.expect(articleCategory).not.eql(undefined);",
+									"    console.log(`The article category is ${articleCategory}`)",
+									"});",
+									"",
+									"",
+									"",
+									"",
+									"",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "f54819ed-d106-413e-9c2d-5ebb2dcb3360",
+								"exec": [
+									"let articleNids = pm.environment.get(\"articleNids\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "accept-encoding",
+								"value": "gzip, deflate, br"
+							},
+							{
+								"key": "accept-language",
+								"value": "en-US,en;q=0.9,es-US;q=0.8,es;q=0.7"
+							},
+							{
+								"key": "authority",
+								"value": "8wytltq586.execute-api.us-east-1.amazonaws.com"
+							},
+							{
+								"key": "content-type",
+								"value": "application/json"
+							},
+							{
+								"key": "origin",
+								"value": "{{env}}"
+							},
+							{
+								"key": "referer",
+								"value": "{{env}}"
+							},
+							{
+								"key": "user-agent",
+								"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"query\":\"query {\\n articleById(nid: {{articleNids}}) {\\n nid,\\n title,\\n headline,\\n category,\\n author,\\n author_type,\\n hero_image,\\n hero_video,\\n hero_caption,\\n hero_source,\\n body,\\n related_articles,\\n related,\\n tags,\\n url\\n}\\n}\"}"
+						},
+						"url": {
+							"raw": "{{graphql.dataFeed.Url}}",
+							"host": [
+								"{{graphql.dataFeed.Url}}"
+							]
+						},
+						"description": "In order to query an specific article and check its properties."
+					},
+					"response": []
+				},
+				{
+					"name": "articlesBySlug",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "fa58a6a2-46e4-4b0b-829a-8110ff21ce2a",
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Article Exist\", function () {",
+									"   pm.expect(jsonData.data).not.eql(undefined);",
+									"});",
+									"",
+									"pm.test(\"Article contains nid\", function () {",
+									"    let articleId = jsonData.data.articlesBySlug[0].nid;",
+									"    pm.expect(articleId).to.eql(\"5050\");",
+									"    console.log(`The articleSlug id is ${articleId}`)",
+									"});",
+									"",
+									"pm.test(\"Article contains title\", function () {",
+									"    let articleTitle = jsonData.data.articlesBySlug[0].title;",
+									"    pm.expect(articleTitle).to.include(\"Northwell Health named official healthcare provider of the 2019 PGA Championship\");",
+									"    console.log(`The articleSlug id is ${articleTitle}`)",
+									"});",
+									"",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "accept-encoding",
+								"value": "gzip, deflate, br"
+							},
+							{
+								"key": "accept-language",
+								"value": "en-US,en;q=0.9,es-US;q=0.8,es;q=0.7"
+							},
+							{
+								"key": "authority",
+								"value": "{{env}}"
+							},
+							{
+								"key": "content-type",
+								"value": "application/json"
+							},
+							{
+								"key": "origin",
+								"value": "{{env}}"
+							},
+							{
+								"key": "referer",
+								"value": "{{env}}"
+							},
+							{
+								"key": "user-agent",
+								"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"query\":\"query {\\narticlesBySlug(slug: \\\"northwell-health-named-official-healthcare-provider-2019-pga-championship\\\") {\\n nid,\\n title,\\n headline,\\n category,\\n author,\\n author_type,\\n hero_image,\\n hero_video,\\n hero_caption,\\n hero_source,\\n body,\\n related_articles,\\n related,\\n tags,\\n url\\n}\\n\\n}\"}\n"
+						},
+						"url": {
+							"raw": "{{graphql.dataFeed.Url}}",
+							"host": [
+								"{{graphql.dataFeed.Url}}"
+							]
+						},
+						"description": "In order to query an specific article and check its properties."
+					},
+					"response": []
 				}
 			],
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "accept",
-						"value": "*/*"
-					},
-					{
-						"key": "accept-encoding",
-						"value": "gzip, deflate, br"
-					},
-					{
-						"key": "accept-language",
-						"value": "en-US,en;q=0.9,es-US;q=0.8,es;q=0.7"
-					},
-					{
-						"key": "authority",
-						"value": "{{PgaURL}}"
-					},
-					{
-						"key": "content-type",
-						"value": "application/json"
-					},
-					{
-						"key": "origin",
-						"value": "{{PgaURL}}"
-					},
-					{
-						"key": "referer",
-						"value": "{{PgaURL}}"
-					},
-					{
-						"key": "user-agent",
-						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\"query\":\"query facility {\\n facility(facility_id: \\\"{{facility_id}}\\\") {\\n name\\n facility_name\\n city\\n state\\n state_name\\n zip\\n phone\\n section_name\\n photo_facility\\n course_type_label\\n address1\\n address2\\n address3\\n address4\\n facility_id\\n universal_id\\n greenhouse_id\\n members {\\n universal_id\\n first_name\\n last_name\\n member_type\\n member_class_description\\n }\\n }\\n}\\n\"}"
-				},
-				"url": {
-					"raw": "{{PgaURL}}",
-					"host": [
-						"{{PgaURL}}"
-					]
-				}
-			},
-			"response": []
+			"protocolProfileBehavior": {}
 		},
 		{
-			"name": "tournaments",
-			"event": [
+			"name": "Shop",
+			"item": [
 				{
-					"listen": "test",
-					"script": {
-						"id": "fa58a6a2-46e4-4b0b-829a-8110ff21ce2a",
-						"exec": [
-							"const jsonData = pm.response.json();",
-							"let tournaments = jsonData.data.tournaments;",
-							"",
-							"let tournament = jsonData.data.tournaments[_.random(0, tournaments.length - 1)];",
-							"",
-							"let {tournamentId: tournament_id,feedId: feedId, currentRoundState }  = tournament;",
-							"",
-							"pm.test(\"Status code is 200\", function() {",
-							"  pm.response.to.have.status(200);",
-							"  pm.environment.set(\"tournament_id\", tournament_id);",
-							"  pm.environment.set(\"tournament_currentRoundState\", currentRoundState);",
-							"  pm.environment.set(\"tournament_feedId\", feedId);",
-							"});",
-							""
+					"name": "Stories Landing",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "900f0743-e1e7-4551-b458-37e0990fd2d9",
+								"exec": [
+									"pm.globals.get(\"NavMainId\");"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "3195aa50-f69d-4f01-ae0b-5f315bd6d602",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "Referer",
+								"value": "{{env}}"
+							},
+							{
+								"key": "Origin",
+								"value": "{{env}}"
+							},
+							{
+								"key": "User-Agent",
+								"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer IcIPi56BO56v3BK3Y_lZGbvOFj7S1ZEwkrKGzTdCi9g"
+							},
+							{
+								"key": "Sec-Fetch-Mode",
+								"value": "cors"
+							},
+							{
+								"key": "content-type",
+								"value": "application/json"
+							}
 						],
-						"type": "text/javascript"
-					}
-				},
-				{
-					"listen": "prerequest",
-					"script": {
-						"id": "feca5541-5b90-44f8-93d1-302158046083",
-						"exec": [
-							""
-						],
-						"type": "text/javascript"
-					}
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query EventsLanding {\n  eventsLanding(id: \"{{EventsLandingId}}\") {\n    hero {\n      url\n      width\n      height\n      __typename\n    }\n    heroText\n    heroCtaText\n    metaTitle\n    metaDescription\n    metaImage {\n      url\n      __typename\n    }\n    heroLink {\n      __typename\n      slug\n      sys {\n        id\n        publishedAt\n        __typename\n      }\n      cat {\n        series\n        __typename\n      }\n    }\n    eventInProgress {\n      tournamentId\n      feedId\n      slug\n      headline\n      course\n      startDate\n      endDate\n      location\n      logo {\n        url\n        __typename\n      }\n      __typename\n    }\n    championshipsCollection {\n      total\n      items {\n        headline\n        location\n        course\n        startDate\n        endDate\n        link\n        ctaLabel\n        slug\n        image {\n          url\n          __typename\n        }\n        logo {\n          url\n          __typename\n        }\n        sys {\n          id\n          __typename\n        }\n        __typename\n      }\n      __typename\n    }\n    toursCollection {\n      total\n      items {\n        headline\n        slug\n        tourName\n        logo {\n          url\n          __typename\n        }\n        startDate\n        endDate\n        tournamentId\n        feedId\n        __typename\n      }\n      __typename\n    }\n    featuredRegional {\n      headline\n      location\n      course\n      startDate\n      endDate\n      link\n      ctaLabel\n      slug\n      image {\n        url\n        __typename\n      }\n      logo {\n        url\n        __typename\n      }\n      sys {\n        id\n        __typename\n      }\n      __typename\n    }\n    regionalsCollection {\n      total\n      items {\n        headline\n        location\n        course\n        startDate\n        endDate\n        link\n        ctaLabel\n        slug\n        image {\n          url\n          __typename\n        }\n        logo {\n          url\n          __typename\n        }\n        sys {\n          id\n          __typename\n        }\n        __typename\n      }\n      __typename\n    }\n    __typename\n  }\n}\n",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{graphql.contentful.Url}}",
+							"host": [
+								"{{graphql.contentful.Url}}"
+							]
+						},
+						"description": "Stories<Query>"
+					},
+					"response": []
 				}
 			],
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "accept",
-						"value": "*/*"
-					},
-					{
-						"key": "accept-encoding",
-						"value": "gzip, deflate, br"
-					},
-					{
-						"key": "accept-language",
-						"value": "en-US,en;q=0.9,es-US;q=0.8,es;q=0.7"
-					},
-					{
-						"key": "authority",
-						"value": "{{PgaURL}}"
-					},
-					{
-						"key": "content-type",
-						"value": "application/json"
-					},
-					{
-						"key": "origin",
-						"value": "{{PgaURL}}"
-					},
-					{
-						"key": "referer",
-						"value": "{{PgaURL}}"
-					},
-					{
-						"key": "user-agent",
-						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\"query\":\"query tournaments {\\n tournaments {\\n name\\n feedId\\n tournamentId\\n currentRoundState\\n state\\n }\\n}\\n\"}"
-				},
-				"url": {
-					"raw": "{{PgaURL}}",
-					"host": [
-						"{{PgaURL}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "tournament",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"id": "fa58a6a2-46e4-4b0b-829a-8110ff21ce2a",
-						"exec": [
-							"const jsonData = pm.response.json();",
-							"",
-							"if (jsonData.data.tournament) {",
-							"  let players = jsonData.data.tournament.players;",
-							"",
-							"  if ( players.length > 1) {",
-							"    let player = players[_.random(0, players.length - 1)];",
-							"",
-							"    let { playerId } = player;",
-							"    pm.environment.set(\"playerId\", playerId);",
-							"  }",
-							"}",
-							"",
-							"pm.test(\"Status code is 200\", function() {",
-							"  pm.response.to.have.status(200);",
-							"});",
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "accept",
-						"value": "*/*"
-					},
-					{
-						"key": "accept-encoding",
-						"value": "gzip, deflate, br"
-					},
-					{
-						"key": "accept-language",
-						"value": "en-US,en;q=0.9,es-US;q=0.8,es;q=0.7"
-					},
-					{
-						"key": "authority",
-						"value": "{{PgaURL}}"
-					},
-					{
-						"key": "content-type",
-						"value": "application/json"
-					},
-					{
-						"key": "origin",
-						"value": "{{PgaURL}}"
-					},
-					{
-						"key": "referer",
-						"value": "{{PgaURL}}"
-					},
-					{
-						"key": "user-agent",
-						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\"query\":\"query tournament {\\n tournament(\\n tournamentId: \\\"R2020522\\\"\\n feedId: \\\"PGA_TOUR\\\"\\n ) {\\n name\\n tournamentId\\n feedId\\n currentRoundState\\n location\\n players {\\n playerId\\n currentPosition\\n currentRound\\n thru\\n feedId\\n teeTime\\n }\\n }\\n}\\n\"}"
-				},
-				"url": {
-					"raw": "{{PgaURL}}",
-					"host": [
-						"{{PgaURL}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "scorecard",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"id": "fa58a6a2-46e4-4b0b-829a-8110ff21ce2a",
-						"exec": [
-							"const jsonData = pm.response.json();",
-							"pm.test(\"Status code is 200\", function () {",
-							"pm.response.to.have.status(200);",
-							"});",
-							"",
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "accept",
-						"value": "*/*"
-					},
-					{
-						"key": "accept-encoding",
-						"value": "gzip, deflate, br"
-					},
-					{
-						"key": "accept-language",
-						"value": "en-US,en;q=0.9,es-US;q=0.8,es;q=0.7"
-					},
-					{
-						"key": "authority",
-						"value": "{{PgaURL}}"
-					},
-					{
-						"key": "content-type",
-						"value": "application/json"
-					},
-					{
-						"key": "origin",
-						"value": "{{PgaURL}}"
-					},
-					{
-						"key": "referer",
-						"value": "{{PgaURL}}"
-					},
-					{
-						"key": "user-agent",
-						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\"query\":\"query scorecard {\\n scorecard(tournamentId: \\\"{{tournament_id}}\\\", playerId: \\\"{{playerId}}\\\",feedId:\\\"{{tournament_feedId}}\\\") {\\n back\\n courseCode\\n front\\n holes {\\n inTheHoleTs\\n courseCode\\n hole\\n par\\n playerId\\n rRelativePar\\n round\\n score\\n tRelativePar\\n tournamentId\\n yardsActual\\n yardsOfficial\\n }\\n playerId\\n relativePar\\n round\\n startTee\\n stroke\\n teeTime\\n thru\\n tournamentId\\n utcOffset\\n }\\n }\\n \"}"
-				},
-				"url": {
-					"raw": "{{PgaURL}}",
-					"host": [
-						"{{PgaURL}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "player",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"id": "fa58a6a2-46e4-4b0b-829a-8110ff21ce2a",
-						"exec": [
-							"const jsonData = pm.response.json();",
-							"pm.test(\"Status code is 200\", function () {",
-							"pm.response.to.have.status(200);",
-							"});",
-							"",
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "accept",
-						"value": "*/*"
-					},
-					{
-						"key": "accept-encoding",
-						"value": "gzip, deflate, br"
-					},
-					{
-						"key": "accept-language",
-						"value": "en-US,en;q=0.9,es-US;q=0.8,es;q=0.7"
-					},
-					{
-						"key": "authority",
-						"value": "{{PgaURL}}"
-					},
-					{
-						"key": "content-type",
-						"value": "application/json"
-					},
-					{
-						"key": "origin",
-						"value": "{{PgaURL}}"
-					},
-					{
-						"key": "referer",
-						"value": "{{PgaURL}}"
-					},
-					{
-						"key": "user-agent",
-						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\"query\":\"query player {\\n player(playerId: \\\"{{playerId}}\\\", feedId: \\\"PGA_TOUR\\\") {\\n firstName\\n lastName\\n playerId\\n feedId\\n }\\n}\\n\"}"
-				},
-				"url": {
-					"raw": "{{PgaURL}}",
-					"host": [
-						"{{PgaURL}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "allArticles",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"id": "fa58a6a2-46e4-4b0b-829a-8110ff21ce2a",
-						"exec": [
-							"const jsonData = pm.response.json();",
-							"let articles = jsonData.data.allArticles.articles;",
-							"let articleNid = parseInt(jsonData.data.allArticles.articles[_.random(0, 3)].nid);",
-							"let articleHeadline= jsonData.data.allArticles.articles[_.random(0, articles.length-1 )].headline;",
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
-							"    console.log(`Total articles is : ${jsonData.data.allArticles.total}`);",
-							"    pm.environment.set(\"articleNids\", articleNid);",
-							"      pm.environment.set(\"articleHeadline\", articleHeadline);",
-							"});",
-							"",
-							"pm.test(\"Articles Exist\", function () {",
-							"   pm.expect(jsonData.data).not.eql(undefined);",
-							"});",
-							"",
-							""
-						],
-						"type": "text/javascript"
-					}
-				},
-				{
-					"listen": "prerequest",
-					"script": {
-						"id": "1948ae57-7c0f-49ef-a2de-b3f7176227ce",
-						"exec": [
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "accept",
-						"value": "*/*"
-					},
-					{
-						"key": "accept-encoding",
-						"value": "gzip, deflate, br"
-					},
-					{
-						"key": "accept-language",
-						"value": "en-US,en;q=0.9,es-US;q=0.8,es;q=0.7"
-					},
-					{
-						"key": "authority",
-						"value": "{{PgaURL}}"
-					},
-					{
-						"key": "content-type",
-						"value": "application/json"
-					},
-					{
-						"key": "origin",
-						"value": "{{PgaURL}}"
-					},
-					{
-						"key": "referer",
-						"value": "{{PgaURL}}"
-					},
-					{
-						"key": "user-agent",
-						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\"query\":\"query {\\n allArticles(offset: 1, limit: 5, ordertype: asc) {\\n total\\n articles {\\n nid\\n title\\n headline\\n category\\n author\\n author_type\\n hero_image\\n hero_video\\n hero_caption\\n hero_source\\n body\\n related_articles\\n related\\n tags\\n url\\n slug\\n object_type\\n created_date\\n updated_date\\n }\\n }\\n}\\n\"}\n"
-				},
-				"url": {
-					"raw": "{{PgaURL}}",
-					"host": [
-						"{{PgaURL}}"
-					]
-				},
-				"description": "In order to obtain all articles stored in our legacy articles database."
-			},
-			"response": []
-		},
-		{
-			"name": "articleById",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"id": "fa58a6a2-46e4-4b0b-829a-8110ff21ce2a",
-						"exec": [
-							"const jsonData = pm.response.json();",
-							"pm.environment.get(\"articleNid\");",
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});",
-							"",
-							"pm.test(\"Article Exist\", function () {",
-							"   pm.expect(jsonData.data).not.eql(undefined);",
-							"});",
-							"",
-							"pm.test(\"Article contains nid\", function () {",
-							"    let articleId = jsonData.data.articleById[0].nid;",
-							"    pm.expect(articleId).not.eql(undefined);",
-							"    console.log(`The article id is ${articleId}`)",
-							"});",
-							"",
-							"pm.test(\"Article contains title\", function () {",
-							"    let articleTitle = jsonData.data.articleById[0].title;",
-							"    pm.expect(articleTitle).not.eql(undefined);",
-							"    console.log(`The article id is ${articleTitle}`)",
-							"});",
-							"",
-							"pm.test(\"Article contains events category\", function () {",
-							"    let articleCategory= jsonData.data.articleById[0].category;",
-							"    pm.expect(articleCategory).not.eql(undefined);",
-							"    console.log(`The article category is ${articleCategory}`)",
-							"});",
-							"",
-							"",
-							"",
-							"",
-							"",
-							"",
-							"",
-							""
-						],
-						"type": "text/javascript"
-					}
-				},
-				{
-					"listen": "prerequest",
-					"script": {
-						"id": "f54819ed-d106-413e-9c2d-5ebb2dcb3360",
-						"exec": [
-							"let articleNids = pm.environment.get(\"articleNids\");"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "accept",
-						"value": "*/*"
-					},
-					{
-						"key": "accept-encoding",
-						"value": "gzip, deflate, br"
-					},
-					{
-						"key": "accept-language",
-						"value": "en-US,en;q=0.9,es-US;q=0.8,es;q=0.7"
-					},
-					{
-						"key": "authority",
-						"value": "8wytltq586.execute-api.us-east-1.amazonaws.com"
-					},
-					{
-						"key": "content-type",
-						"value": "application/json"
-					},
-					{
-						"key": "origin",
-						"value": "{{PgaURL}}"
-					},
-					{
-						"key": "referer",
-						"value": "{{PgaURL}}"
-					},
-					{
-						"key": "user-agent",
-						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\"query\":\"query {\\n articleById(nid: {{articleNids}}) {\\n nid,\\n title,\\n headline,\\n category,\\n author,\\n author_type,\\n hero_image,\\n hero_video,\\n hero_caption,\\n hero_source,\\n body,\\n related_articles,\\n related,\\n tags,\\n url\\n}\\n}\"}"
-				},
-				"url": {
-					"raw": "{{PgaURL}}",
-					"host": [
-						"{{PgaURL}}"
-					]
-				},
-				"description": "In order to query an specific article and check its properties."
-			},
-			"response": []
-		},
-		{
-			"name": "articlesBySlug",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"id": "fa58a6a2-46e4-4b0b-829a-8110ff21ce2a",
-						"exec": [
-							"const jsonData = pm.response.json();",
-							"",
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});",
-							"",
-							"pm.test(\"Article Exist\", function () {",
-							"   pm.expect(jsonData.data).not.eql(undefined);",
-							"});",
-							"",
-							"pm.test(\"Article contains nid\", function () {",
-							"    let articleId = jsonData.data.articlesBySlug[0].nid;",
-							"    pm.expect(articleId).to.eql(\"5050\");",
-							"    console.log(`The articleSlug id is ${articleId}`)",
-							"});",
-							"",
-							"pm.test(\"Article contains title\", function () {",
-							"    let articleTitle = jsonData.data.articlesBySlug[0].title;",
-							"    pm.expect(articleTitle).to.include(\"Northwell Health named official healthcare provider of the 2019 PGA Championship\");",
-							"    console.log(`The articleSlug id is ${articleTitle}`)",
-							"});",
-							"",
-							"",
-							"",
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "accept",
-						"value": "*/*"
-					},
-					{
-						"key": "accept-encoding",
-						"value": "gzip, deflate, br"
-					},
-					{
-						"key": "accept-language",
-						"value": "en-US,en;q=0.9,es-US;q=0.8,es;q=0.7"
-					},
-					{
-						"key": "authority",
-						"value": "{{PgaURL}}"
-					},
-					{
-						"key": "content-type",
-						"value": "application/json"
-					},
-					{
-						"key": "origin",
-						"value": "{{PgaURL}}"
-					},
-					{
-						"key": "referer",
-						"value": "{{PgaURL}}"
-					},
-					{
-						"key": "user-agent",
-						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\"query\":\"query {\\narticlesBySlug(slug: \\\"northwell-health-named-official-healthcare-provider-2019-pga-championship\\\") {\\n nid,\\n title,\\n headline,\\n category,\\n author,\\n author_type,\\n hero_image,\\n hero_video,\\n hero_caption,\\n hero_source,\\n body,\\n related_articles,\\n related,\\n tags,\\n url\\n}\\n\\n}\"}\n"
-				},
-				"url": {
-					"raw": "{{PgaURL}}",
-					"host": [
-						"{{PgaURL}}"
-					]
-				},
-				"description": "In order to query an specific article and check its properties."
-			},
-			"response": []
-		},
-		{
-			"name": "Search",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"id": "fa58a6a2-46e4-4b0b-829a-8110ff21ce2a",
-						"exec": [
-							"",
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
-							" ",
-							"});",
-							""
-						],
-						"type": "text/javascript"
-					}
-				},
-				{
-					"listen": "prerequest",
-					"script": {
-						"id": "05ad89c7-8a0f-4447-994f-cd3d3172a653",
-						"exec": [
-							"pm.environment.set(\"random_state\", _.random(0, 49));"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "accept",
-						"value": "*/*"
-					},
-					{
-						"key": "accept-encoding",
-						"value": "gzip, deflate, br"
-					},
-					{
-						"key": "accept-language",
-						"value": "en-US,en;q=0.9,es-US;q=0.8,es;q=0.7"
-					},
-					{
-						"key": "authority",
-						"value": "{{PgaURL}}"
-					},
-					{
-						"key": "content-type",
-						"value": "application/json"
-					},
-					{
-						"key": "origin",
-						"value": "{{PgaURL}}"
-					},
-					{
-						"key": "referer",
-						"value": "{{PgaURL}}"
-					},
-					{
-						"key": "user-agent",
-						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\"query\":\"query search {\\n search(searchText: \\\"{{articleHeadline}}\\\", offset: 0, limit: 10) {\\n total\\n searchResults {\\n object_id\\n object_type\\n title\\n headline\\n url\\n slug\\n hero_image\\n category\\n created_date\\n }\\n }\\n}\"}"
-				},
-				"url": {
-					"raw": "{{PgaURL}}",
-					"host": [
-						"{{PgaURL}}"
-					]
-				}
-			},
-			"response": []
+			"protocolProfileBehavior": {}
 		}
 	],
 	"event": [
@@ -1071,5 +2010,80 @@
 				]
 			}
 		}
-	]
+	],
+	"variable": [
+		{
+			"id": "779d012a-4f21-485a-aec6-78bbd85c1e2b",
+			"key": "env",
+			"value": "https://dbeofnzbx0eyo.cloudfront.net/",
+			"type": "string"
+		},
+		{
+			"id": "105d948c-66c8-4045-88e4-05fe431933ca",
+			"key": "graphql.dataFeed.Url",
+			"value": "https://2r4x53015a.execute-api.us-east-1.amazonaws.com/qa/graphql",
+			"type": "string"
+		},
+		{
+			"id": "d1f69010-512d-4b64-9e04-e8231839f284",
+			"key": "graphql.contentful.Url",
+			"value": "https://graphql.contentful.com/content/v1/spaces/56u5qdsjym8c/environments/qa",
+			"type": "string"
+		},
+		{
+			"id": "0d522d3b-9b24-40c5-98c5-0957ec071eef",
+			"key": "NavMainId",
+			"value": "1bd2WQMTwt7QaWtdW6xwcd",
+			"type": "string"
+		},
+		{
+			"id": "9522b0b0-8ca4-4068-b7b9-61278c6b4340",
+			"key": "PageHomeId",
+			"value": "7ioZefYMc8oCJtTvYeAxSo",
+			"type": "string"
+		},
+		{
+			"id": "4e1fa19a-b0ae-4213-9466-704c83fbb6bd",
+			"key": "TournamentId",
+			"value": "R2020047",
+			"type": "string"
+		},
+		{
+			"id": "24e73db1-3e7f-418d-ab5a-13f7df15dccf",
+			"key": "FeedId",
+			"value": "PGA_TOUR",
+			"type": "string"
+		},
+		{
+			"id": "ac96dd80-c30b-448a-90df-4d63845f05d9",
+			"key": "FooterId",
+			"value": "JNWNtqNJ4jtSczLZLw1Nf",
+			"type": "string"
+		},
+		{
+			"id": "c9885723-89a1-46d2-badd-805d0fdfc55f",
+			"key": "CoursesLandingId",
+			"value": "1yEwUXQhmImgdCPLjHW6e6",
+			"type": "string"
+		},
+		{
+			"id": "d06c6685-535b-4089-be6b-074339c1b444",
+			"key": "LearnPageId",
+			"value": "3xTFUw5IlNKqjihUVsH3n4",
+			"type": "string"
+		},
+		{
+			"id": "a2e4c846-7984-4669-af2b-5b8ff1313bc3",
+			"key": "EventsLandingId",
+			"value": "7N2eKA3qd5SNXpZOZGEsxO",
+			"type": "string"
+		},
+		{
+			"id": "dd330a97-65f0-42b2-a422-fbd624c4ca9e",
+			"key": "StoriesLandingId",
+			"value": "77N3oobP3YcPxeOCLzee4j",
+			"type": "string"
+		}
+	],
+	"protocolProfileBehavior": {}
 }
