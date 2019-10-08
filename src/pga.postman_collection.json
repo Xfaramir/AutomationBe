@@ -579,87 +579,6 @@
 					"response": []
 				},
 				{
-					"name": "SearchCourses",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"id": "900f0743-e1e7-4551-b458-37e0990fd2d9",
-								"exec": [
-									"pm.globals.get(\"NavMainId\");"
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"id": "3195aa50-f69d-4f01-ae0b-5f315bd6d602",
-								"exec": [
-									"const jsonData = pm.response.json();",
-									"let facilityName = jsonData.data.searchCourses;",
-									"",
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"    pm.environment.set(\"facility_id\", facilityName[0].facility_id);",
-									"   ",
-									"});",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "accept",
-								"value": "*/*"
-							},
-							{
-								"key": "Referer",
-								"value": "{{env}}"
-							},
-							{
-								"key": "Origin",
-								"value": "{{env}}"
-							},
-							{
-								"key": "User-Agent",
-								"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36"
-							},
-							{
-								"key": "Authorization",
-								"value": "Bearer IcIPi56BO56v3BK3Y_lZGbvOFj7S1ZEwkrKGzTdCi9g"
-							},
-							{
-								"key": "Sec-Fetch-Mode",
-								"value": "cors"
-							},
-							{
-								"key": "content-type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "graphql",
-							"graphql": {
-								"query": "query searchCourses {\n searchCourses(searchText: \"{{usa_state}}\") {\n    name\n    facility_name\n    city\n    state\n    state_name\n    zip\n    phone\n    section_name\n    photo_facility\n    course_type_label\n    address1\n    address2\n    address3\n    address4    \n    facility_id\n    universal_id\n    greenhouse_id\n    _geoloc{\n        lat\n        lng\n    }\n }\n}",
-								"variables": ""
-							}
-						},
-						"url": {
-							"raw": "{{graphql.dataFeed.Url}}",
-							"host": [
-								"{{graphql.dataFeed.Url}}"
-							]
-						},
-						"description": "SearchCourses<Query>"
-					},
-					"response": []
-				},
-				{
 					"name": "ListStates",
 					"event": [
 						{
@@ -897,6 +816,87 @@
 								"{{graphql.dataFeed.Url}}"
 							]
 						}
+					},
+					"response": []
+				},
+				{
+					"name": "SearchCourses",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "900f0743-e1e7-4551-b458-37e0990fd2d9",
+								"exec": [
+									"pm.globals.get(\"NavMainId\");"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "3195aa50-f69d-4f01-ae0b-5f315bd6d602",
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"let facilityName = jsonData.data.searchCourses;",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    pm.environment.set(\"facility_id\", facilityName[0].facility_id);",
+									"   ",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "Referer",
+								"value": "{{env}}"
+							},
+							{
+								"key": "Origin",
+								"value": "{{env}}"
+							},
+							{
+								"key": "User-Agent",
+								"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer IcIPi56BO56v3BK3Y_lZGbvOFj7S1ZEwkrKGzTdCi9g"
+							},
+							{
+								"key": "Sec-Fetch-Mode",
+								"value": "cors"
+							},
+							{
+								"key": "content-type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query searchCourses {\n searchCourses(searchText: \"{{usa_state}}\") {\n    name\n    facility_name\n    city\n    state\n    state_name\n    zip\n    phone\n    section_name\n    photo_facility\n    course_type_label\n    address1\n    address2\n    address3\n    address4    \n    facility_id\n    universal_id\n    greenhouse_id\n    _geoloc{\n        lat\n        lng\n    }\n }\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{graphql.dataFeed.Url}}",
+							"host": [
+								"{{graphql.dataFeed.Url}}"
+							]
+						},
+						"description": "SearchCourses<Query>"
 					},
 					"response": []
 				},
@@ -2013,73 +2013,73 @@
 	],
 	"variable": [
 		{
-			"id": "0463bc5b-69ca-46a0-a980-748e8ff147bc",
+			"id": "ff0dc5f2-96c1-472b-ba90-ea8dd9c3d35a",
 			"key": "env",
 			"value": "https://dbeofnzbx0eyo.cloudfront.net/",
 			"type": "string"
 		},
 		{
-			"id": "72c98ddd-ecfe-41b3-8c28-68d5afbd1e4f",
+			"id": "44af528d-e7e3-4e76-8b6d-263ef3588b79",
 			"key": "graphql.dataFeed.Url",
 			"value": "https://2r4x53015a.execute-api.us-east-1.amazonaws.com/qa/graphql",
 			"type": "string"
 		},
 		{
-			"id": "bcef007a-7f36-453a-83db-06e8314302a0",
+			"id": "ff2a30ac-954f-4b9a-996e-d8677384697c",
 			"key": "graphql.contentful.Url",
 			"value": "https://graphql.contentful.com/content/v1/spaces/56u5qdsjym8c/environments/qa",
 			"type": "string"
 		},
 		{
-			"id": "3949914d-6622-4ee9-88e7-b4113637d6ca",
+			"id": "5f7421ca-b3c9-4798-94d8-d82b275ada49",
 			"key": "NavMainId",
 			"value": "1bd2WQMTwt7QaWtdW6xwcd",
 			"type": "string"
 		},
 		{
-			"id": "3bce490e-1f62-49e8-8cbc-969c665e4904",
+			"id": "0e0cd6da-eb47-4f6e-ab7b-1e89859c5b09",
 			"key": "PageHomeId",
 			"value": "7ioZefYMc8oCJtTvYeAxSo",
 			"type": "string"
 		},
 		{
-			"id": "ce0f4968-3b1e-4587-8ae0-96384628e81d",
+			"id": "3016d86e-048d-4ade-8016-bcd56296818a",
 			"key": "TournamentId",
 			"value": "R2020047",
 			"type": "string"
 		},
 		{
-			"id": "8254799e-26f3-4985-ad0a-123eb0f213c6",
+			"id": "1238fc73-8473-45f2-8f3b-a2e18154cb41",
 			"key": "FeedId",
 			"value": "PGA_TOUR",
 			"type": "string"
 		},
 		{
-			"id": "1c548239-9480-4b5d-bde9-617c2e2e5b50",
+			"id": "570df617-8180-4ddb-b88d-95f418989f27",
 			"key": "FooterId",
 			"value": "JNWNtqNJ4jtSczLZLw1Nf",
 			"type": "string"
 		},
 		{
-			"id": "9eedfa01-327f-4008-a20d-c8a8dbe29ed2",
+			"id": "aa5ef529-8b6c-4d7b-8a27-cec668c97638",
 			"key": "CoursesLandingId",
 			"value": "1yEwUXQhmImgdCPLjHW6e6",
 			"type": "string"
 		},
 		{
-			"id": "bf8af609-e5b5-4190-969b-0d18fbc847d0",
+			"id": "e772a86c-140e-468d-bc11-da728b8bc746",
 			"key": "LearnPageId",
 			"value": "3xTFUw5IlNKqjihUVsH3n4",
 			"type": "string"
 		},
 		{
-			"id": "8bafe080-a54a-4bb4-993c-db32fed92c46",
+			"id": "7cb32f09-3c77-4ff3-a93d-815ed54d9d6e",
 			"key": "EventsLandingId",
 			"value": "7N2eKA3qd5SNXpZOZGEsxO",
 			"type": "string"
 		},
 		{
-			"id": "a727bbf9-d1b6-4de5-8b3e-3ebe57ad20b4",
+			"id": "c1189487-7d24-4f03-91b4-f1ab49214c3d",
 			"key": "StoriesLandingId",
 			"value": "77N3oobP3YcPxeOCLzee4j",
 			"type": "string"
