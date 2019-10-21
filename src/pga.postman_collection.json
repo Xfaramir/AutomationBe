@@ -1235,12 +1235,21 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\"query\":\"query tournaments {\\n tournaments {\\n name\\n feedId\\n tournamentId\\n currentRoundState\\n state\\n }\\n}\\n\"}"
+							"raw": "{\"query\":\"query tournaments {\\n tournaments {\\n name\\n feedId\\n tournamentId\\n currentRoundState\\n state\\n rounds\\n }\\n}\\n\"}"
 						},
 						"url": {
-							"raw": "{{graphql.dataFeed.Url}}",
+							"raw": "https://w4n2hdr33i.execute-api.us-east-1.amazonaws.com/dev/graphql",
+							"protocol": "https",
 							"host": [
-								"{{graphql.dataFeed.Url}}"
+								"w4n2hdr33i",
+								"execute-api",
+								"us-east-1",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"dev",
+								"graphql"
 							]
 						}
 					},
@@ -2013,73 +2022,73 @@
 	],
 	"variable": [
 		{
-			"id": "ff0dc5f2-96c1-472b-ba90-ea8dd9c3d35a",
+			"id": "ad837708-9b94-46ce-83f7-d29299001eb2",
 			"key": "env",
 			"value": "https://dbeofnzbx0eyo.cloudfront.net/",
 			"type": "string"
 		},
 		{
-			"id": "44af528d-e7e3-4e76-8b6d-263ef3588b79",
+			"id": "e6d66bf1-ee68-4891-a003-4a230c6f4516",
 			"key": "graphql.dataFeed.Url",
-			"value": "https://2r4x53015a.execute-api.us-east-1.amazonaws.com/qa/graphql",
+			"value": "https://api.pga.com/graphql",
 			"type": "string"
 		},
 		{
-			"id": "ff2a30ac-954f-4b9a-996e-d8677384697c",
+			"id": "0005e0f6-30b5-485c-a580-09570d52bb9d",
 			"key": "graphql.contentful.Url",
 			"value": "https://graphql.contentful.com/content/v1/spaces/56u5qdsjym8c/environments/qa",
 			"type": "string"
 		},
 		{
-			"id": "5f7421ca-b3c9-4798-94d8-d82b275ada49",
+			"id": "e0cb0f88-3815-40d9-b559-a7f286807b1f",
 			"key": "NavMainId",
 			"value": "1bd2WQMTwt7QaWtdW6xwcd",
 			"type": "string"
 		},
 		{
-			"id": "0e0cd6da-eb47-4f6e-ab7b-1e89859c5b09",
+			"id": "026b7622-011f-4e22-ab8a-e38278ae52a5",
 			"key": "PageHomeId",
 			"value": "7ioZefYMc8oCJtTvYeAxSo",
 			"type": "string"
 		},
 		{
-			"id": "3016d86e-048d-4ade-8016-bcd56296818a",
+			"id": "54e0b774-0b99-433d-b45b-5d1d90e74cd5",
 			"key": "TournamentId",
 			"value": "R2020047",
 			"type": "string"
 		},
 		{
-			"id": "1238fc73-8473-45f2-8f3b-a2e18154cb41",
+			"id": "bdb186ad-3221-4bb2-a090-97d5c5cf443e",
 			"key": "FeedId",
 			"value": "PGA_TOUR",
 			"type": "string"
 		},
 		{
-			"id": "570df617-8180-4ddb-b88d-95f418989f27",
+			"id": "97c5d86f-6ea4-4a6d-ac91-94d1e78b6cf1",
 			"key": "FooterId",
 			"value": "JNWNtqNJ4jtSczLZLw1Nf",
 			"type": "string"
 		},
 		{
-			"id": "aa5ef529-8b6c-4d7b-8a27-cec668c97638",
+			"id": "4b8f3d61-bf28-4ab6-b00f-30261d50ca13",
 			"key": "CoursesLandingId",
 			"value": "1yEwUXQhmImgdCPLjHW6e6",
 			"type": "string"
 		},
 		{
-			"id": "e772a86c-140e-468d-bc11-da728b8bc746",
+			"id": "69d3ec62-18e7-48e6-ad07-c8163f86dcc7",
 			"key": "LearnPageId",
 			"value": "3xTFUw5IlNKqjihUVsH3n4",
 			"type": "string"
 		},
 		{
-			"id": "7cb32f09-3c77-4ff3-a93d-815ed54d9d6e",
+			"id": "c5019a50-7061-4116-b7ab-b44d2dc6d899",
 			"key": "EventsLandingId",
 			"value": "7N2eKA3qd5SNXpZOZGEsxO",
 			"type": "string"
 		},
 		{
-			"id": "c1189487-7d24-4f03-91b4-f1ab49214c3d",
+			"id": "971e8859-88b9-411b-b693-43b9620ab203",
 			"key": "StoriesLandingId",
 			"value": "77N3oobP3YcPxeOCLzee4j",
 			"type": "string"
